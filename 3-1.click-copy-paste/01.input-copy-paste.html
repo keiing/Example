@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+    <input type="text" id="textAreas" />
+    <!--右边是一个按钮-->
+    <button class="cuteShareBtn" id="copy">复制</button>
+    <span style="font-size:13px">点击复制会自动复制到剪贴板 输入框中的内容</span>
+    </div>
+    <script>
+    //以下代码只能查找到input的value内容值
+    (function (window, undefind) {
+    let copy = document.getElementById('copy')
+    //手机端将 click时间改为tap时间就好了
+    copy.addEventListener("click", function () {
+    //获取input对象
+    var obj = document.getElementById("textAreas");
+    //选择当前对象
+    obj.select();
+    try {
+    //进行复制到剪切板
+    if (document.execCommand("Copy", "false", null)) {
+    //如果复制成功
+    alert("复制成功！");
+    } else {
+    //如果复制失败
+    alert("复制失败！");
+    }
+    } catch (err) {
+    //如果报错
+    alert("复制错误！")
+    }
+    })
+    })(window)
+    </script>
+</body>
+</html>

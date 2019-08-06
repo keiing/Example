@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <meta charset="UTF-8">
+    <span id="demoInput">hello,world,wodingleisient</span>
+    <button style="background-color: antiquewhite;display: inline;" id="btn">copySku</button>
+    <script>
+        var btn = document.querySelector('#btn');
+        btn.addEventListener('click', function () {
+            var input = document.createElement('input');
+            document.body.appendChild(input);
+            var content = document.querySelector('#demoInput').innerHTML;
+            input.setAttribute('value', content);
+            input.select();
+            if (document.execCommand('copy')) {
+                document.execCommand('copy');
+                // execCommand() //这个方法, 只对可编辑区域有效果, 如 input, textarea 标签,
+                    console.log('复制成功');
+            }
+            document.body.removeChild(input);
+        })
+    </script>
+</body>
+
+</html>
