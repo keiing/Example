@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        'use strict'
+        //apply 跟call 一样不过多了个打散数组
+        Function.prototype.myApply=function(content){
+            //固定套路先判断 this 是不是函数 不是函数抛出错误
+            if(typeof this!=='funtion'){
+                throw new TypeError('this not function');
+            }
+            content=content || window;
+            content.fn=this; 
+            let result;
+            console.log(arguments[1],arguments,'arguments')
+            if(arguments[1]){
+                result=content.fn(...arguments[1]);
+            }else{
+                result=content.fn()
+            }
+            //delete删除/释放 不占内存
+            delete content.fn;
+            return result;
+        }
+        var ming=function(...array){
+            this.name=array+'-------array'
+            this.wang=array[2];
+            console.log(this.name,this.wang)
+        }
+        let array=[1,2,3,4,5,7]
+        ming.apply(this,array)
+    </script>
+</body>
+</html>

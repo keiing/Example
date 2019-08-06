@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //assign 简单的合并对象
+        /*
+        Object.assign方法实行的是浅拷贝，而不是深拷贝。也就是说，
+        如果源对象某个属性的值是对象，
+        那么目标对象拷贝得到的是这个对象的引用。
+        */
+        //-----------------------------介绍分割线上
+        /*
+        Object.assign只拷贝自身属性，不可枚举的属性（enumerable为false）和继承的属性不会被拷贝。
+        对于嵌套的对象，Object.assign的处理方法是替换，而不是添加。
+        Object.assign可以用来处理数组，但是会把数组视为对象。
+        console.log(Object.assign([1, 2, 3], [4, 5]));//[4,5,3]
+        console.log(Object.assign({},[1,2,3],[4,5]))//{0:4,1:5,2:3}
+        其中，4覆盖1，5覆盖2，因为它们在数组的同一位置，所以就对应位置覆盖了。
+        */
+        //1.如果目标对象与源对象有同名属性，或多个源对象有同名属性，则后面的属性会覆盖前面的属性。
+        //2.如果只有一个参数，Object.assign会直接返回该参数。
+        //3.如果该参数不是对象，则会先转成对象，然后返回。
+        //4.由于undefined和null无法转成对象，所以如果它们作为参数，就会报错。
+        //-----------------------------介绍分割线下
+        console.log(Object.assign([1, 2, 3], [4, 5]))//[4,5,3]
+        console.log(Object.assign({},[1,2,3],[4,5]))//{0:4,1:5,2:3}
+        let sourceObj1 = { b: 1 };
+        let sourceObj2 = { c: 3,b:{
+            a:1,b:2
+        } };
+        let sourceObj=Object.assign({},sourceObj1, sourceObj2);
+        //因为是浅拷贝 对象中的对象修改后，sourceObj也会受到影响
+        sourceObj2.b.a=15;
+        console.log(sourceObj,'sourceObj');//a受到了修改
+        //如果该参数不是对象，则会先转成对象，然后返回。
+        let num=Object.assign(5);
+        let num2=new Number(5);
+        let num3=Number(5);
+        console.log(num===num2||num===num3);//false PrimitiveValue 5 继承了 number /Number{5}/
+        
+        //--------------------浅克隆对象
+    //copyFn 采用这种方法克隆，只能克隆原始对象自身的值，不能克隆它继承的值
+        function copyFn(origin){
+            return Object.assign({},origin);
+        }
+        let newSourceObj=copyFn(sourceObj);
+        newSourceObj.b.a=5;//这里修改以上还是会受到影响，这是浅克隆
+        console.log(newSourceObj);
+    //clone 这种方法克隆，只能克隆原始对象自身的值，还克隆它继承的值
+        function clone(origin){
+        // 在JS里子类利用Object.getPrototypeOf去调用父类方法,用来获取对象的原型。
+            let originProto=Object.getPrototypeOf(origin);
+            return Object.assign(Object.create(originProto),origin);
+        }
+        let new2SourceObj=clone(sourceObj);
+        new2SourceObj.b.a=22;
+        console.log(new2SourceObj);
+
+    
+    </script>
+</body>
+
+</html>

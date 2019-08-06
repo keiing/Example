@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //对象结构
+    let result={
+        parent:[
+            {name:"文件夹1",pid:0,id:1},
+            {name:"文件夹2",pid:0,id:2},
+            {name:"文件夹3",pid:0,id:3},
+            {name:"文件夹1-1",pid:1,id:4},
+            {name:"文件夹2-1",pid:2,id:5}
+        ],
+        child:[
+            {name:"文件1",pid:1,id:10001},
+            {name:"文件2",pid:1,id:10002},
+            {name:"文件2-1",pid:2,id:10003},
+            {name:"文件2-2",pid:2,id:10004},
+            {name:"文件2-2-1",pid:4,id:10005},
+            {name:"文件2-2-1",pid:5,id:10006},
+        ],
+        code:0
+    }
+    //使用reduce 合并对象
+    //merge mer ge change ge->zhi    
+    console.log(result)
+    //1.扁平的数据如何变成 多层数据 递归数据
+    let AllDate=[...result.parent,...result.child];
+    //{id:1,{name:"文件名1",pid:0,id:1}}
+    let treeMapList=AllDate.reduce((obj,current)=>{
+        obj[current['id']]=current;
+        return obj;
+    },{})
+    console.log(treeMapList);
+    console.log(treeMapList[3])
+    let results=AllDate.reduce((arr,current)=>{
+        let pid=current.pid;
+        let parent=treeMapList[pid];
+        // console.log(parent)
+        if(parent){
+            // console.log(parent.children?'1':'2')
+            //为空就把自己赋值上去，不为空就往末尾添加
+            parent.children?parent.children.push(current):parent.children=[current]
+        }else if(pid===0){//这是根文件夹
+            arr.push(current)
+        }
+        return arr;
+    },[]);
+    console.log(results)
+    </script>
+</body>
+</html>

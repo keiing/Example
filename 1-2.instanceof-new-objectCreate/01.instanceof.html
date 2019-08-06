@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        'use strict'
+        // instanceof运算符用于测试构造函数的prototype属性是否出现在对象的原型链中的任何位置
+        // instanceof 运算符用来检测 constructor.prototype 是否存在于参数 object 的原型链上。
+        //右边变量的原型存在于左手变量的原型链上
+        function myInstanceof(left, right) {
+            let leftValue = left.__proto__;
+            let rigthValue = right.prototype;
+            while (true) {
+                if (leftValue === null) {
+                    return false
+                }
+                if (leftValue === rigthValue) {
+                    return true
+                }
+                leftValue = leftValue.__proto__;
+            }
+        }
+        /* -----分割线----- */
+        function Car(make, model, year) {
+            this.make = make;
+            this.model = model;
+            this.year = year;
+        }
+        var auto = new Car('Honda', 'Accord', 1998);
+
+        console.log(auto instanceof Car,'auto instanceof Car');//true
+        console.log(auto instanceof Object,'auto instanceof Object');//true
+        console.log(myInstanceof(auto,Car),'myInstanceof(auto,Car)')//true
+        console.log(myInstanceof(auto,Object),'myInstanceof(auto,Object)')//true
+      
+
+    </script>
+</body>
+
+</html>

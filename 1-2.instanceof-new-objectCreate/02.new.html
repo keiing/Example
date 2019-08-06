@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    'use strict'
+    function myNew(fun){
+        return function(){
+            let obj={
+                __proto__:fun.prototype
+            }
+            fun.call(obj,...arguments)
+            return obj;  
+        }
+    }
+    /*---分割---*/
+    function person(name,age){
+        this.name=name;
+        this.age=age;
+    }
+    person.prototype.init=function(){
+        console.log(`我是${this.name}我今年是${this.age}`)
+    }
+    /* ---- 分割线2 ---- */ 
+    //ES6 写法
+    class ES6Person{
+        constructor(name,age){
+            this.name=name;
+            this.age=age;
+        }
+        init(){
+        console.log(`我是${this.name}我今年是${this.age}`)
+        }
+    }
+    //---------------------------------1
+    let myNewObj=myNew(person)('myNewname',18);
+    let newObj=new person('newName',18)
+    console.log(myNewObj)
+    myNewObj.init()
+    console.log(newObj)
+    newObj.init()
+    //-----------------------------------2ES6
+    //Uncaught TypeError: Class constructor ES6Person cannot be invoked without 'new'
+    // let es6MyNewObj=myNew(ES6Person)('es6MyNewObj',18) 不支持ES6写法
+    // console.log(es6MyNewObj) 
+    let es6NewObj=new ES6Person('es6NewObj',18)
+    console.log(es6NewObj)
+    es6NewObj.init();
+    </script>
+</body>
+</html>

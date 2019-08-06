@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        "use strict";
+        //严格模式只是禁止调用 arguments 本身 arguments.callee
+        //实现一个call函数
+        /*
+        1.思路:将要改变this的指向的方法挂在到目标this上执行并且返回
+        */
+        let name='window--name'
+        Function.prototype.myCall=function(content){
+            if(typeof this!=='function'){
+                //如果不是Fn就报错
+                throw new TypeError('not function')
+            }
+            //1.如果未传入参数 this就指向window
+            content=content || window;
+            content.fn = this;
+            //2.用于剔除this获取要传入的内容,获取数组中长度从1到结尾的内容
+            let arg=[...arguments].slice(1);
+            //3.执行函数content.fn==myCall .前的函数
+            let result=content.fn(...arg);
+            //4.并且返回结果
+            delete content.fn;
+            return result;
+        }
+        let lilei={
+            name:'zhangsan-lilei'
+        }
+        var ming=function(name,win,li){
+            this.name=name;
+            console.log(this.name,win,li)
+        }
+        ming.myCall(lilei,name,name,name);
+        //作用于改变成功
+        console.log(lilei)
+    </script>
+</body>
+</html>
