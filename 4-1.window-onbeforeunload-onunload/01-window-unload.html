@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<!-- <body onload="loadpopup()"> -->
+    <body>
+    <div>
+        关闭/刷新窗口触发时间
+    </div>
+    <script>
+            (function(window,undefined){
+            //关闭之前触发
+            //onbeforeunload实验结果表示google 不支持使用 addEventListener
+            window.onbeforeunload = function (event) {
+                var e = event || window.event;
+                // 兼容IE8和Firefox 4之前的版本
+                if (e) {
+                    e.returnValue = '关闭提示';
+                }
+                // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
+                return '关闭提示';
+            }
+            //关闭后触发
+            window.onunload = function () {
+                var sWinName = "LR" + parseInt(Math.random() * 10000); //利用随机数处理WinName
+                // window.open('./01-window-unload.html','copy','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=no,resizable=yes,copyhistory=yes');//新窗口打开
+                window.open('./01-window-unload.html','copy');//当前窗口打开
+                closeWin();
+            }
+            // window.open("url",Math.random());
+        })(window);
+        /*
+        function openwin() {
+            window.open("../3-1.click-copy-paste/02.span-copy-paste.html", "")
+        }
+
+        function get_cookie(Name) {
+            var search = Name + "="
+            var returnvalue = "";
+            if (document.cookie.length > 0) {
+                offset = document.cookie.indexOf(search)
+                if (offset != -1) {
+                    offset += search.length
+                    end = document.cookie.indexOf(";", offset);
+                    if (end == -1)
+                        end = document.cookie.length;
+                    returnvalue = unescape(document.cookie.substring(offset, end))
+                }
+            }
+            return returnvalue;
+        }
+
+        function loadpopup() {
+            if (get_cookie('popped')==''){
+                    openwin()
+                    document.cookie = "popped=yes"
+                }
+            }
+            */
+    </script>
+</body>
+
+</html>
