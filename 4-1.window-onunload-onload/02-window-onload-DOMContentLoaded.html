@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <!-- 如果将link标签置于script标签之后，就会立即打印。 -->
+    <script>
+      /*
+        2、DOMContentLoaded 事件
+
+        DOMContentLoaded不同的浏览器对其支持不同，所以在实现的时候我们需要做不同浏览器的兼容。
+
+        1）支持DOMContentLoaded事件的，就使用DOMContentLoaded事件；
+
+        2）IE6、IE7不支持DOMContentLoaded，但它支持onreadystatechange事件，该事件的目的是提供与文档或元素的加载状态有关的信息。
+
+        3)  更低的ie还有个特有的方法doScroll， 通过间隔调用：document.documentElement.doScroll("left");
+
+        可以检测DOM是否加载完成。 当页面未加载完成时，该方法会报错，直到doScroll不再报错时，就代表DOM加载完成了。该方法更接近DOMContentLoaded的实现。
+        */
+      //Note: 同步 JavaScript 会暂停 DOM 的解析。
+      //Note: 还有许多通用和独立的库提供跨浏览器方法来检测 DOM 是否已准备就绪
+      window.onload = function() {
+        console.log("我是window.onload");
+      };
+      //在使用 DOMContentLoaded 更加合适的情况下使用 load 是一个令人难以置信的流行的错误，所以要谨慎。
+      //可以看出 DOMContentLoaded 是在onload之前触发
+      //但是要注意:DOMContentLoaded 事件必须等待其所属script之前的样式表加载解析完成才会触发。
+      /*
+        当初始的 HTML 文档被完全加载和解析完成之后，DOMContentLoaded 事件被触发，而无需等待样式表、图像和子框架的完成加载。
+        */
+      document.addEventListener("DOMContentLoaded", function(event) {
+        // document.write(JSON.stringify(this));
+        //DOMContentLoaded就像是WebSocket
+        /*
+            属性            类型            描述
+            target 只读     EventTarget     产生改事件的对象(DOM数中最顶级那个对象)
+            type 只读       DomString       事件类型
+            bubbles 只读    Boolean         该事件是否冒泡
+            cancelable 只读 Boolean         该事件是否取消默认行为
+            */
+        console.log("我是DOMContentLoaded");
+        console.log(event.target, "target"); //DOM数对象
+        console.log(event.type, "type"); //类型
+        console.log(event.bubbles, "bubbles"); //是否在冒泡
+        console.log(event.cancelable, "cancelable"); //是否取消默认行为
+
+        //--------------实验
+        for (var i = 0; i < 10000000; i++) {
+          // 这个同步脚本将延迟DOM的解析。
+          // 所以DOMContentLoaded事件稍后将启动。
+          if (i / 1000 === 5) {
+            console.log(i);
+          }
+        }
+      });
+    </script>
+    <script>
+      //实例
+      let ModeLoad = function() {
+        console.log("我是Modeload");
+      };
+
+      function ready(fn) {
+        if (document.addEventListener) {
+          document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+              document.removeEventListener(
+                "DOMContentLoaded",
+                arguments.callee,
+                false
+              );
+              fn();
+            },
+            false
+          );
+        }
+
+        // 如果IE
+        else if (document.attachEvent) {
+          // 确保当页面是在iframe中加载时，事件依旧会被安全触发
+          document.attachEvent("onreadystatechange", function() {
+            if (document.readyState == "complete") {
+              document.detachEvent("onreadystatechange", arguments.callee);
+              fn();
+            }
+          });
+
+          // 如果是IE且页面不在iframe中时，轮询调用doScroll 方法检测DOM是否加载完毕
+          if (
+            document.documentElement.doScroll &&
+            typeof window.frameElement === "undefined"
+          ) {
+            try {
+              document.documentElement.doScroll("left");
+            } catch (error) {
+              return setTimeout(arguments.callee, 20);
+            }
+            fn();
+          }
+        }
+      }
+      ready(ModeLoad);
+    </script>
+  </body>
+</html>

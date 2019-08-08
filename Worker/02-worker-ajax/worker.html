@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <button>多线程发送ajax</button>
+    <span id='nums'></span>
+    <script>
+        let data = "";
+        // let url = 'http://127.0.0.1:3000/index'
+        let btn = document.querySelector("button");
+        btn.onclick = function (e) {
+            var worker = new Worker("ajax.js")
+            worker.onmessage = function (e) { //事件
+                console.log(e)
+                var nums = document.getElementById("nums") //测试可删掉
+                window.data = e.data; //获取到的结果
+                nums.innerHTML = e.data; //测试可删掉
+            }
+            console.log(typeof url)
+            if (typeof url === "undefined") { //如果url未定义
+                let url = 'http://127.0.0.1:3000/index'; //默认发送地址 
+                worker.postMessage(url); //向wes.js发送参数
+            } else {
+                worker.postMessage(url);
+            }
+        }
+    </script>
+</body>
+
+</html>

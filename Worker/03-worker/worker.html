@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //http://www.ruanyifeng.com/blog/2018/07/web-worker.html地址可以去网络上看看
+        var worker = new Worker('work.js');
+        worker.postMessage('Hello World');
+        worker.postMessage({
+            method: 'echo',
+            args: ['Work']
+        });
+
+        worker.onmessage = function (event) {
+            console.log('Received message ' + event.data);
+            doSomething();
+        }
+
+        function doSomething() {
+            // 执行任务
+            worker.postMessage('Work done!');
+        }
+        worker.terminate();
+    </script>
+</body>
+
+</html>
