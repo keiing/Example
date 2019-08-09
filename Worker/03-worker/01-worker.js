@@ -12,7 +12,6 @@ self.addEventListener('message', function (e) {
     case 'stop':
       this.postMessage('WORKER STOPPED:stop ' + data.msg);
       // self.close()用于在 Worker 内部关闭自身。
-      // this.postMessage('worker1')
       this.close(); // Terminates the worker.
       break;
     default:

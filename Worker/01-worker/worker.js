@@ -1,5 +1,7 @@
 // self代表子线程自身，即子线程的全局对象 因此，等同于下面两种写法。
 (function (window, undefined) {
+    window.a=10;//keyi1
+
     if (window.name === "myworker1") {
         window.addEventListener('message', function (e) {
             this.postMessage('myWorker1----' + e.data)
@@ -18,4 +20,3 @@
         window.close();//关闭Worker线程
     })
 })(self)
-let a=10

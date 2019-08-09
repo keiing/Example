@@ -15,7 +15,7 @@
         let data = "";
         // let url = 'http://127.0.0.1:3000/index'
         let btn = document.querySelector("button");
-        btn.onclick = function (e) {
+        btn.onclick = function ({url,type,data}) {
             //每次点击就创建一个ajax线程
             var worker = new Worker("ajax.js")
             worker.onmessage = function (e) { //事件

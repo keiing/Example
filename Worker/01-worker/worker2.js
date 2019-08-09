@@ -7,10 +7,9 @@
         self.postMessage()：向产生这个 Worker 线程发送消息。
         self.importScripts()：加载 JS 脚本。
           */
-        importScripts('./worker.js');//成功引入了WORKER.JS
+      importScripts('./worker.js');//成功引入了WORKER.JS
       window.addEventListener('message',function(e){
         this.console.log(e.data)
         this.postMessage(a)
       },false);
-  // console.log(worker)
 })(self)
