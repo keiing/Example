@@ -16,12 +16,15 @@
         // let url = 'http://127.0.0.1:3000/index'
         let btn = document.querySelector("button");
         btn.onclick = function (e) {
+            //每次点击就创建一个ajax线程
             var worker = new Worker("ajax.js")
             worker.onmessage = function (e) { //事件
                 console.log(e)
                 var nums = document.getElementById("nums") //测试可删掉
                 window.data = e.data; //获取到的结果
                 nums.innerHTML = e.data; //测试可删掉
+                //为了以防万一每次结束客户端页使用强行关闭
+                worker.terminate();
             }
             console.log(typeof url)
             if (typeof url === "undefined") { //如果url未定义

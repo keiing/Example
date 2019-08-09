@@ -9,25 +9,51 @@
 </head>
 
 <body>
+    <button>发送消息</button>
     <script>
-        //http://www.ruanyifeng.com/blog/2018/07/web-worker.html地址可以去网络上看看
-        var worker = new Worker('work.js');
-        worker.postMessage('Hello World');
+        // worker的兼容性还不错，但不兼容IE9
+        
+        //http://www.ruanyifeng.com/blog/2018/07/web-worker.html 地址可以去网络上看看
+        // 浏览器原生提供Worker()构造函数，用来供主线程生成 Worker 线程。
+        // var myWorker = new Worker(jsUrl, options);
+       //-----------------------------------------分割——----------------------------
+       
+       /*
+       Worker.onerror：指定 error 事件的监听函数。
+       Worker.onmessage：指定 message 事件的监听函数，发送过来的数据在Event.data属性中。
+       Worker.onmessageerror：指定 messageerror 事件的监听函数。发送的数据无法序列化成字符串时，会触发这个事件。
+       Worker.postMessage()：向 Worker 线程发送消息。
+       Worker.terminate()：立即终止 Worker 线程。
+       */
+      var btn = document.querySelector('button')
+        var worker = new Worker('worker.js', {
+            name: 'worker'
+        });
+        var worker1 = new Worker('01-worker.js', {
+            name: "worker1"
+        })
         worker.postMessage({
             method: 'echo',
-            args: ['Work']
+            args: ['Work'],
+            msg:"zhang"
         });
-
         worker.onmessage = function (event) {
-            console.log('Received message ' + event.data);
-            doSomething();
+                console.log('wroker', event);
+                //关闭worker线程
+                doSomething()
         }
-
         function doSomething() {
-            // 执行任务
-            worker.postMessage('Work done!');
+            // 执行worker任务
+            //Worker 完成任务以后，主线程就可以把它关掉。
+            worker.terminate();// worker1.terminate();
         }
-        worker.terminate();
+        worker1.onmessage = function (event) {
+        console.log('wroker1', event.data);
+        }
+        btn.onclick = function () {
+            worker.postMessage('worker');//向worker线程发送消息会发现并没有反应
+            worker1.postMessage({cmd:"start",msg:"启动成功"});//worker线程关闭
+        }
     </script>
 </body>
 

@@ -34,28 +34,93 @@
                 <h4>Worker 线程无法读取本地文件，即不能打开本机的文件系统（file://），它所加载的脚本，必须来自网络。</h4>
             </li>
         </ol>
+        <hr>
+    </div>
+    <div>
+        <ol>
+            <li>
+                <h3>1）同源</h3>
+                <p>
+                    分配给worker子线程运行的脚本文件，必须与主线程的脚本文件同源，包括协议，域名和端口，不支持本地地址（file://）；
+
+                    当使用CDN来存储js文件时，主线程与子线程就会出现跨域
+                </p>
+                <h5>
+                    解决方法：
+                    【1】将子线程的脚本转换成Blod对象
+
+                    【2】然后给Blod对象创建一个URL
+
+                    【3】将这个URL传给worker的构造函数
+                </h5>
+                <h5>
+                    示例代码：
+                    <br>
+                    var workerBlob = new Blob(['(' + function +')()'], { type: "text/javascript" });
+                    <br>
+                    var url = window.URL.createObjectURL(workerBlob);
+                    <br>
+                    var worker = new Worker(url);
+                </h5>
+            </li>
+            <li>
+                <h3>2) 访问 </h3>
+                <p>
+                    worker子线程所在的全局对象，与主线程不在一个上下文环境，所以无法读取主线程所在网页的DOM，无法使用document，window，parent这些对象，global指向有变更，window需要改写成self，不能执行alert()和comfire()的方法，
+                    只能读取部分navigator对象内的数据
+                </p>
+            </li>
+            <li>
+                <h3>3）使用异步</h3>
+                <p>
+                    worker子线程中支持js的异步操作，但仍然不可以跨域
+                    <br>
+                    worker的兼容性还不错，但不兼容IE9
+                </p>
+            </li>
+        </ol>
     </div>
     <script>
+        /*
+        Worker()构造函数，可以接受两个参数。
+        第一个参数是脚本的网址（必须遵守同源政策），
+        该参数是必需的，且只能加载 JS 脚本，否则会报错。
+        
+        第二个参数是配置对象，该对象可选。
+        它的一个作用就是指定 Worker 的名称，用来区分多个 Worker 线程。
+        
+        // 主线程
+        var myWorker = new Worker('worker.js', { name : 'myWorker' });
+        
+        // Worker 线程
+        self.name // myWorker
+        */
+        let arr=[]
+        //第一个参数是脚本的网址（必须遵守同源政策）参数是必需的，且只能加载 JS 脚本，否则会报错。
         let worker = new Worker('worker.js', {
-            name: "myWorker"
+            //第二个参数是配置对象，该对象可选。它的一个作用就是指定 Worker 的名称，用来区分多个 Worker 线程。
+            name: "myworker1"
         });
-        let worker2 = new Worker('worker2.js', {
-            name: "myWorker2"
-        })
-        let arr = [];
-        //------------worker
+        let worker2=new Worker('worker.js',{name:"myworker2"});
+        worker2.onmessage=function(e){
+            console.log(e.data);
+        }
+        worker.postMessage('666')
+        //----------------------0
         worker.onmessage = function (event) {
             arr.push(event.data)
         }
-        worker.postMessage('666');
+        worker2.postMessage('666');
+        //-----------------------1
         setTimeout(() => {
             console.log(arr)
-        }, 300)
-        //-------------worker2
-        worker2.onmessage = function (event) {
-            console.log(event.data)
+            worker.terminate(); //立即终止 Worker 线程。
+            worker2.terminate();
+        }, 300);
+        //--------------------
+        worker.onmessageerror = function () {
+            // 指定 messageerror 事件的监听函数。发送的数据无法序列化成字符串时，会触发这个事件。
         }
-        worker2.postMessage('worker2')
     </script>
 </body>
 
