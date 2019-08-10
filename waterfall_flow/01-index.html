@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <span class="span">测试js设置样式渲染效率</span>
+    </div>
+    <script>
+        /* 1.直接设置style属性 */
+        // element.style.height = '100px';
+        /* 2.直接设置属性 */
+        // element.setAttribute('height', '100px');
+        /* 3.使用setAttribute设置style属性 */
+        // element.setAttribute('style', 'height: 100px !important');
+        /* 4.使用setProperty设置属性，通过第三个参数设置important */
+        // element.style.setProperty('height', '300px', 'important');
+        /* 5.设置cssText */
+        // element.style.cssText += 'height: 100px !important';
+        const MathRandom = () =>{Math.floor(Math.random()*256)+Math.floor(Math.random()*256)+Math.floor(Math.random()*256)};
+        
+        var span = document.getElementsByClassName('span')[0];
+        console.log(span, `#${MathRandom()}`)
+        console.time('span');
+        span.setAttribute("style", `color:#${MathRandom()}`)
+        span.setAttribute("style", `color:#${MathRandom()}`)
+        span.setAttribute("style", `color:#${MathRandom()}`)
+
+        span.setAttribute("style", `color:#${MathRandom()}`)
+        span.setAttribute("style", `color:#${MathRandom()}`)
+        span.setAttribute("style", `color:#${MathRandom()}`)
+
+        span.setAttribute("style", `color:#${MathRandom()}`)
+        span.setAttribute("style", `color:#${MathRandom()}`)
+        span.setAttribute("style", `color:#${MathRandom()}`)
+
+        span.setAttribute("style", `color:#${MathRandom()}`)
+        span.setAttribute("style", `color:#${MathRandom()}`)
+        span.setAttribute("style", `color:#${MathRandom()}`)
+
+        span.setAttribute("style", `color:#${MathRandom()}`)
+        span.setAttribute("style", `color:#${MathRandom()}`)
+        span.setAttribute("style", `color:#${MathRandom()}`)
+
+        span.setAttribute("style", `color:#${MathRandom()}`)
+        span.setAttribute("style", `color:#${MathRandom()}`)
+        span.setAttribute("style", `color:#${MathRandom()}`)
+        console.timeEnd('span')
+        console.time('span');
+        span['style']['color'] = `#${MathRandom()}`
+        span['style']['color'] = `#${MathRandom()}`
+        span['style']['color'] = `#${MathRandom()}`
+
+        span['style']['color'] = `#${MathRandom()}`
+        span['style']['color'] = `#${MathRandom()}`
+        span['style']['color'] = `#${MathRandom()}`
+
+        span['style']['color'] = `#${MathRandom()}`
+        span['style']['color'] = `#${MathRandom()}`
+        span['style']['color'] = `#${MathRandom()}`
+
+        span['style']['color'] = `#${MathRandom()}`
+        span['style']['color'] = `#${MathRandom()}`
+        span['style']['color'] = `#${MathRandom()}`
+
+        span['style']['color'] = `#${MathRandom()}`
+        span['style']['color'] = `#${MathRandom()}`
+        span['style']['color'] = `#${MathRandom()}`
+
+        span['style']['color'] = `#${MathRandom()}`
+        span['style']['color'] = `#${MathRandom()}`
+        span['style']['color'] = `#${MathRandom()}`
+        console.timeEnd('span')
+        console.time('span');
+        span.style.setProperty('color', `#${MathRandom()}`)
+        span.style.setProperty('color', `#${MathRandom()}`)
+        span.style.setProperty('color', `#${MathRandom()}`)
+
+        span.style.setProperty('color', `#${MathRandom()}`)
+        span.style.setProperty('color', `#${MathRandom()}`)
+        span.style.setProperty('color', `#${MathRandom()}`)
+
+        span.style.setProperty('color', `#${MathRandom()}`)
+        span.style.setProperty('color', `#${MathRandom()}`)
+        span.style.setProperty('color', `#${MathRandom()}`)
+
+        span.style.setProperty('color', `#${MathRandom()}`)
+        span.style.setProperty('color', `#${MathRandom()}`)
+        span.style.setProperty('color', `#${MathRandom()}`)
+
+        span.style.setProperty('color', `#${MathRandom()}`)
+        span.style.setProperty('color', `#${MathRandom()}`)
+        span.style.setProperty('color', `#${MathRandom()}`)
+
+        span.style.setProperty('color', `#${MathRandom()}`)
+        span.style.setProperty('color', `#${MathRandom()}`)
+        span.style.setProperty('color', `#${MathRandom()}`)
+        console.timeEnd('span')
+    </script>
+</body>
+
+</html>
