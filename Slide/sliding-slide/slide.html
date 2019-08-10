@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .slide-parent {
+            /* text-align: center; */
+            margin: 0 auto;
+            width: 30%;
+            height: 300px;
+        }
+
+        .slide-first-div-parent {
+            position: relative;
+            width: 250px;
+            height: 40px;
+            background: #666;
+        }
+
+        .slide-p-text {
+            position: absolute;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            left: 35%;
+            color: #000;
+            z-index: 2;
+            line-height: 40px;
+            /* 内容不可被选择 */
+            user-select: none;
+        }
+
+        .silde-span-sliding {
+            position: absolute;
+            box-sizing: border-box;
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border: 1px solid #000;
+            display: flex;
+            padding: 0 0 4px;
+            align-items: center;
+            z-index: 3;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        .silde-div-sliding-bj {
+            position: absolute;
+            box-sizing: border-box;
+            top: 0;
+            width: 0px;
+            height: 40px;
+            background: green;
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slide-parent">
+        <div class="slide-first-div-parent">
+            <span class="silde-span-sliding">&gt;&gt;&gt;</span>
+            <p class="slide-p-text">拖动滑块验证</p>
+            <div class="silde-div-sliding-bj">
+                <!-- 背景 -->
+            </div>
+        </div>
+    </div>
+    <script>
+        (function (window, undefined) {
+            window.addEventListener('load', function () {
+                //验证成功
+                //验证失败
+                //触发事件 onmousedown onmousemove onmouseup
+                let slideSpan = document.querySelector('.silde-span-sliding');
+                let slideSpanParent = slideSpan.parentNode;
+                let slidePText = slideSpan.nextElementSibling;
+                let slideDivSlidingBj = slidePText.nextElementSibling;
+                // console.log(slidePText)
+                // console.log(slideSpan);
+                //按下才会生效
+                slideSpan.addEventListener('mousedown', function (event) {
+                    var downX = event.clientX; //按下的x轴
+                    var isdown = false;
+                    var mousedownCallee = arguments.callee;
+                    var mousemoveCallee;
+                    slideSpan.addEventListener('mousemove', function (event) {
+                        //event.clientX //移动的x轴
+                        mousemoveCallee = arguments.callee;
+                        var moveX = event.clientX - downX;
+                        //slideSpanParent.offsetWidth 父容器宽度
+                        //this.offsetWidth 当前滑块宽度
+                        if (moveX >= 0) {
+                            this.style.left = moveX + "px";
+                            slideDivSlidingBj.style.width = moveX + 'px'; //背景宽度
+                            if (moveX >= slideSpanParent.offsetWidth - this.offsetWidth) {
+                                isdown = true;
+                                slidePText.textContent = '验证通过'
+                                slidePText.style.color='#fff';
+                                this.removeEventListener('mousemove', arguments.callee,
+                                    false)
+                                this.removeEventListener('mousedown', mousedownCallee,
+                                    false)
+                            }
+                        }
+                    }, false)
+                    slideSpan.addEventListener('mouseup', function (event) {
+                        this.removeEventListener('mousemove', mousemoveCallee, false);
+                        if (isdown) return;
+                        this.style.left = 0;
+                        slideDivSlidingBj.style.width = 0;
+                    }, false)
+                    //mousedown事件
+                }, false)
+                //load事件
+            }, false)
+        })(window)
+    </script>
+</body>
+
+</html>
