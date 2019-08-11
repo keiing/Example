@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    .body{
+        text-align: center;
+    }
+    .render-div{
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+    </style>
+</head>
+
+<body>
+        <p>一个页面展示给我们观看时，已经绘制完毕了（绘制可以当成渲染）</p>
+        <p>绘制页面:浏览器中中有个叫渲染引擎的东西，
+            以一个像素为单位，它会一行一行渲染我们的页面,像是3d打印的过程
+        </p>
+        <p>在系统内部是并不认识我们的代码,如:div</p>
+        <p>浏览器的内核会对你的页面进行检索,首先先识别html代码，然后生成一个dom树(domTree)，dom树会去把整个html代码一行一行的去识别，识别完成之后，会把识别完成后的代码挂载到一颗数上
+            <br>
+            树的顶端是html标签<br>
+            树的左侧是head标签，右侧是body标签<br>
+            head中有一些标签，body中也有一些标签，如:p,div<br>
+            <p style="color:red">
+                浏览器识别html代码,他会把html的每一个节点放到这个树形结构对应的位置里面去
+                就是他会根据你标签的排列方式，绘制出一颗dom树,叫dom节点的属性结构，是这样一个过程
+                ,而且绘制一个dom数，符合一个原则，叫做深度优先原则，
+                深度优先，就是一条路走到黑，他看完开头的html标签之后他会去先看 <span style="color:red">左侧的数head，然后再看head里面有没有什么内容了</span>,
+                它形成树的过程，(并不是广度)是深度的,在head内如果有meta的话，先看meta，有title就会去title，<span style="color:red">直到一条枝干走到头，再反过来看另一条枝干,body内同理，这就是深度优先原则</span>
+            </p>
+        </p>
+        <br>
+        <p>绘制</p>
+            <p>    
+                网络上搜索的渲染引擎
+                http:地址:
+                https://www.zybuluo.com/Sakura-W/note/168812
+                <br>
+                1.渲染引擎首先解析HTML文档，转换为一颗DOM树 
+                    2.解析CSS样式（不管是内联还是外联），渲染出用于渲染DOM树的渲染树，渲染树包括颜色、尺寸等属性
+                    3.对渲染树的每个节点进行布局处理，确定其在屏幕上的显示位置 
+                    4.遍历渲染树并用UI后端层将每个节点绘制出来
+                </p>
+        <div class='render-div'></div>
+        <p>
+            &lt;div&gt;<br>
+            &lt;div&gt;
+            &lt;span&gt;
+            &lt;/span&gt;
+            &lt;/div&gt;<br>
+            &lt;/div&gt;<br>
+            &lt;span&gt;
+            &lt;/span&gt;<br>
+            &lt;strong&gt;<br>
+            &lt;em&gt;
+            &lt;/em&gt;<br>
+            &lt;/strong&gt;<br>
+        </p>
+</body>
+
+</html>
