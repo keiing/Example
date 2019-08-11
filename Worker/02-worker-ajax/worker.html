@@ -20,7 +20,7 @@
         let btn = document.querySelector("button");
         btn.onclick = function ({url,type,data,dataType}) {
             //每次点击就创建一个ajax线程
-            var worker = new Worker("ajax.js")
+            var worker = new Worker("workerAjax.js")
             worker.onmessage = function (e) { //事件
                 console.log(e.data)
                 var nums = document.getElementById("nums") //测试可删掉

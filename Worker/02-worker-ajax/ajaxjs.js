@@ -1,4 +1,4 @@
-function ajax({url,type,data,dataType}){
+function ajax({type,url,data,dataType}){
     return new Promise(function(resovled,rejected){
           //1. 创建xhr对象
           var xhr=new XMLHttpRequest();
