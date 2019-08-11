@@ -1,5 +1,5 @@
 function ajax({url,type,data,dataType}){
-    return new Promise(function(open,err){
+    return new Promise(function(resovled,rejected){
           //1. 创建xhr对象
           var xhr=new XMLHttpRequest();
           //2.绑定监听事件
@@ -10,8 +10,7 @@ function ajax({url,type,data,dataType}){
                       var res=JSON.parse(xhr.responseText)
                   else
                       var res=xhr.responseText
-                      
-                  open(res);
+                      resovled(res);
               }
           }
           if(type.toLowerCase()=="get"&&data!=undefined){
