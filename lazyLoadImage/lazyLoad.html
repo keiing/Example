@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        1.前后数据交互<br>
+        2.利用第三方插件实现懒加载<br>
+        3.手写懒加载<br>
+    </div>
+    <!-- 这里为了省事直接引用封装过的ajax -->
+    <script src='../Worker/02-worker-ajax/ajaxjs.js'></script>
+    <script>
+        (function(window,undefined){
+            ajax({
+                type:"get",
+                url:"http://127.0.0.1:8080/user/ajaxDemo",
+                dataType:"json"
+            }).then((data)=>{
+                console.log(data)
+            })
+        })(window)
+    </script>
+</body>
+</html>
