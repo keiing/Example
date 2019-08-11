@@ -6,23 +6,95 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Hyper Text Markup Language 这里减少内存我就直接使用网上存储图片了</title>
 </head>
+<style>
+    .main{
+        width:100%;
+        position: relative;
+    }
+    .main .box{
+        /* width: 200px; */
+        /* width:200px;
+        margin-right: 20px;
+        top:20px;
+        left:20px;
+        margin-bottom: 20px;
+        position: absolute; */
+        padding: 10px;
+        float: left;
+    }
+    .main .box img{
+        width:200px;
+    }
+</style>
 <body>
     <div>
-        <div>
-            <img src="http://bai.xaxctl.com/all/tx3.jpg" alt="">
-            <img src="http://bai.xaxctl.com/all/tx4.jpg" alt="">
-            <img src="http://bai.xaxctl.com/all/tx6.jpg" alt="">
-            <img src="http://bai.xaxctl.com/all/tx7.jpg" alt="">
-            <img src="http://bai.xaxctl.com/all/tx8.jpg" alt="">
-            <img src="http://bai.xaxctl.com/all/tx9.jpg" alt="">
-            <img src="http://bai.xaxctl.com/all/16.jpg" alt="">
-            <img src="http://bai.xaxctl.com/all/17.jpg" alt="">
-            <img src="http://bai.xaxctl.com/all/19.jpg" alt="">
-            <img src="http://bai.xaxctl.com/all/5.jpg" alt="">
+        <div class="main">
+            <div class="box"><img src="http://bai.xaxctl.com/all/5.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/tx3.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/5.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/tx4.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/5.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/tx6.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/5.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/5.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/tx7.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/tx8.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/tx9.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/16.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/5.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/17.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/19.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/5.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/5.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/tx7.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/tx8.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/tx9.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/5.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/5.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/5.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/tx7.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/tx8.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/tx9.jpg" alt=""></div>
+            <div class="box"><img src="http://bai.xaxctl.com/all/5.jpg" alt=""></div>
         </div>
     </div>
     <script>
-    
+            (function (window, undefined) {
+                    let fnconsoleLog = function (...content) { console.log(...content) }
+                    //window.innerWidth;计算宽度 包含paddding 不包含 marging border
+                    //window.outerWidth;计算宽度 不包含margin
+                    //elem.clientWidth;即对象宽度加上Padding宽
+                    //elem.scrollWidth;即对象宽度加上Padding宽
+                    var allBox = document.querySelectorAll('.main .box');
+                    fnconsoleLog(allBox, "allBox");
+                    var boxWidth = allBox[0].scrollWidth;//一个盒子的宽度
+                    fnconsoleLog(boxWidth, 'boxWidth')
+                    var screenWidth = window.innerWidth;//可见区域宽度 计算打开的控制台
+                    fnconsoleLog(screenWidth)
+                    var cols = parseInt(screenWidth / boxWidth);//获得列数
+                    fnconsoleLog(cols);
+                    var heightArr = [];//存储获取高度
+                    //使用 forEach
+                    allBox.forEach((value, index, array) => {
+                        var boxHeight = array[index].clientHeight;//每长图片的高度
+                        // fnconsoleLog(boxHeight)
+                        if (index < cols) {
+                            heightArr[index] = boxHeight;
+                            fnconsoleLog(heightArr)
+                        } else {
+                            var minBoxHeihgt = Math.min.apply(Math.min, heightArr);
+                            var minBoxHeihgtIndex = heightArr.indexOf(minBoxHeihgt);
+                            array[index].setAttribute('style',
+                                `position:absolute;left:${minBoxHeihgtIndex * boxWidth}px;
+                        top:${minBoxHeihgt}px`);
+                        //注释提醒 在后面重新设置style会替换掉之前设置的属性 array[index].setAttribute('style',`color:red`);
+                        /*后续请使用这两种写法修改内联 array[index].style.color="red"
+                        array[index].style.setProperty('color','red')*/
+                            //改变图片之后 改变数组存储值
+                            heightArr[minBoxHeihgtIndex] += boxHeight
+                        }
+                    })
+                })(window)
     </script>
 </body>
 </html>

@@ -23,12 +23,17 @@
         // element.style.setProperty('height', '300px', 'important');
         /* 5.设置cssText */
         // element.style.cssText += 'height: 100px !important';
-        const MathRandom = () =>{Math.floor(Math.random()*256)+Math.floor(Math.random()*256)+Math.floor(Math.random()*256)};
+        const MathRandom = () =>Math.floor(Math.random()*256)+Math.floor(Math.random()*256)+Math.floor(Math.random()*256);
         
         var span = document.getElementsByClassName('span')[0];
         console.log(span, `#${MathRandom()}`)
         console.time('span');
+        //这么设置会清空别的style样式
+
         span.setAttribute("style", `color:#${MathRandom()}`)
+        //使用过span.setAttribute()修改style后请使用下面两种方法修改内联style
+         /*后续请使用这两种写法 array[index].style.color="red"
+            array[index].style.setProperty('color','red')*/
         span.setAttribute("style", `color:#${MathRandom()}`)
         span.setAttribute("style", `color:#${MathRandom()}`)
 
@@ -100,7 +105,7 @@
 
         span.style.setProperty('color', `#${MathRandom()}`)
         span.style.setProperty('color', `#${MathRandom()}`)
-        span.style.setProperty('color', `#${MathRandom()}`)
+        // span.style.setProperty('position','absolute')
         console.timeEnd('span')
     </script>
 </body>
