@@ -64,6 +64,22 @@
             &lt;/em&gt;<br>
             &lt;/strong&gt;<br>
         </p>
+        <div style="font-size: 23px;color:red">
+            <p>cssTree css树(css树和dom树一样都是深度优先生成)和 domTree DOM树生成完毕后</p>
+            <p>最后cssTree 会和 domTree拼接到一起 生成一颗新的树叫做 renderTree &nbsp; render是渲染绘制的意思 </p>
+        </div>
+        <div>
+           renderTree的重建 是 reflow 重排/重构 reflow在dom操作中效率是最低的 
+           <span style="font-size: 23px;color:red">
+dom节点的增删该查·
+               dom节点的删除，添加，dom节点的宽高变化，位置变化，都会触发重构/重拍，如displya:none----->block;
+               offsetWidth offsethiehgt，当调用offsetWidth和offsetheihgt确实会计算dom节点的宽度和高度，但是系统会基于重新构建renderTree，重新渲染renderTree的原则,这时候方法才能保证，获取到的结果值是实时的。
+               所以会重构renderTree，所以这时候会触发这个重排
+           </span>
+           编程要尽量避免这个重排
+           <p>repaint 重绘  改变背景图片，背景颜色,自己颜色，不会影响后续元素  如果基于css的颜色进行重新重新构建，他不会把renderTree全部给改变，它会先把css树的一部分改变了，然后对应到renderTree上面，把改变的一部分进行改变</p>
+           repaint效率浪费的比较少
+        </div>
 </body>
 
 </html>
