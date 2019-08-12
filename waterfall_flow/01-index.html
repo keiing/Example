@@ -24,7 +24,7 @@
         /* 5.设置cssText */
         // element.style.cssText += 'height: 100px !important';
         const MathRandom = () =>Math.floor(Math.random()*256)+Math.floor(Math.random()*256)+Math.floor(Math.random()*256);
-        
+
         let span = document.getElementsByClassName('span')[0];
         console.log(span, `#${MathRandom()}`)
 
@@ -35,12 +35,12 @@
          /*后续请使用这两种写法 array[index].style.color="red"
             array[index].style.setProperty('color','red')*/
         console.timeEnd('span')
-        console.time('span');
 
+        console.time('span');
         for(let i=0;i<10000;i++)span['style']['color'] = `#${MathRandom()}`
         console.timeEnd('span')
-        console.time('span');
 
+        console.time('span');
         for(let i=0;i<10000;i++)span.style.setProperty('color', `#${MathRandom()}`)
         console.timeEnd('span')
     </script>
