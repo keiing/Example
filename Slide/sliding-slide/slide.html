@@ -85,14 +85,16 @@
                 // console.log(slideSpan);
                 //按下才会生效
                 slideSpan.addEventListener('mousedown', function (event) {
-                    var downX = event.clientX; //按下的x轴
-                    var isdown = false;
-                    var mousedownCallee = arguments.callee;
-                    var mousemoveCallee;
+                    let downX = event.clientX; //按下的x轴
+                    let isdown = false;
+                    let mousedownCallee = arguments.callee;
+                    let mousemoveCallee;
+                    event.preventDefault();
                     slideSpan.addEventListener('mousemove', function (event) {
-                        //event.clientX //移动的x轴
                         mousemoveCallee = arguments.callee;
-                        var moveX = event.clientX - downX;
+                        console.log('触发')
+                        //event.clientX //移动的x轴
+                        let moveX = event.clientX - downX;
                         //slideSpanParent.offsetWidth 父容器宽度
                         //this.offsetWidth 当前滑块宽度
                         if (moveX >= 0) {
@@ -102,7 +104,7 @@
                                 isdown = true;
                                 slidePText.textContent = '验证通过'
                                 slidePText.style.color='#fff';
-                                this.removeEventListener('mousemove', arguments.callee,
+                                this.removeEventListener('mousemove', mousemoveCallee,
                                     false)
                                 this.removeEventListener('mousedown', mousedownCallee,
                                     false)
