@@ -16,11 +16,21 @@
     <script src="../Worker/02-worker-ajax/ajaxjs.js"></script>
     <script>
       (function(window, undefined) {
-        let fnajax=(type,url,data)=>ajax({type: type,url: "http://127.0.0.1:3000/"+url,data: data,dataType: "json",});
+        let fnajax=(type,url,data)=>ajax({type: type,url: "http://127.0.0.1:3000/"+url,data: data,dataType:"json"});
         (async function() {
           result = await fnajax("get","imageJson",{uname: "zhangsan",upass: 123456});
           result1 = await fnajax('post','index',{uname:"zhangsan",upass:123456});
-          console.log(result,result1);
+         var result3=(JSON.parse(result1));
+         console.log(result3)
+         var images=document.createDocumentFragment()
+          for(var i=0;i<result3.length;i++){
+            var img=document.createElement('img');
+            img.src="http://127.0.0.1:3000/"+result3[i]['image'];
+            img.width="300"
+            img.height="300";
+            images.appendChild(img)
+          }
+          document.body.appendChild(images)
         })();
       })(window);
     </script>
