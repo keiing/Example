@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body style="font:19px '微软雅黑';text-align: center;">
+    
+    <div>
+        <h3>JSON</h3>
+        先来谈谈json格式
+        什么是json格式
+        '{"name":"deng","age":123}'
+        这就是json格式
+        json字符串<br>
+        JSON.parse()将json字符串装换为对象，称反序列化
+        JSON.stringify()将对象转换为json字符串,称序列化
+        <br>
+        再来谈谈什么是json
+        JSON是一种传输数据的格式(以对象为样板，本质上就是对象，
+        但用途有区别，对象就是本地用的，json是用来的传输的)
+        JSON.parse();string——> json<br>
+        JSON.stringify();json——>string
+    </div>
+    <hr style="margin-top:30px;">
+    <div>
+        <h3>异步加载js</h3>
+        <h4>Asyncchronous loading</h4>
+        js加载的缺点:加载工具方法没必要阻塞文档，
+        过得js加载会影响页面效率，一旦网速不好，
+        那么整个网站将等待js加载而不运行后续渲染等工作；<br>
+        有些工具方法<span style="color:red">按需加载</span>,用到再加载，
+        不用不加载。
+    </div>
+    <script>
+    </script>
+</body>
+</html>

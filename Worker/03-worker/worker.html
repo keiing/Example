@@ -12,7 +12,7 @@
     <button>发送消息</button>
     <script>
         // worker的兼容性还不错，但不兼容IE9
-        
+
         //http://www.ruanyifeng.com/blog/2018/07/web-worker.html 地址可以去网络上看看
         // 浏览器原生提供Worker()构造函数，用来供主线程生成 Worker 线程。
         // var myWorker = new Worker(jsUrl, options);
@@ -28,12 +28,12 @@
         worker.postMessage({
             method: 'echo',
             args: ['Work'],
-            msg:"zhang"
+            msg: "zhang"
         });
         worker.onmessage = function (event) {
-                console.log('wroker', event);
-                //关闭worker线程
-                doSomething()
+            console.log('wroker', event);
+            //关闭worker线程
+            doSomething()
         }
         //指定 messageerror 事件的监听函数。发送的数据无法序列化成字符串时，会触发这个事件。
         worker.onerror=function(err){
@@ -42,14 +42,19 @@
         function doSomething() {
             // 执行worker任务
             //Worker 完成任务以后，主线程就可以把它关掉。
-            worker.terminate();// worker1.terminate();
+            worker.terminate(); // worker1.terminate();
         }
+        
         worker1.onmessage = function (event) {
-        console.log('wroker1', event.data);
+            console.log('wroker1', event.data);
         }
+
         btn.onclick = function () {
-            worker.postMessage('worker');//向worker线程发送消息会发现并没有反应
-            worker1.postMessage({cmd:"start",msg:"启动成功"});//worker线程关闭
+            worker.postMessage('worker'); //向worker线程发送消息会发现并没有反应
+            worker1.postMessage({
+                cmd: "start",
+                msg: "启动成功"
+            }); //worker线程关闭
         }
     </script>
 </body>

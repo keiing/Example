@@ -14,13 +14,17 @@
     <button>fas2</button>
     <script src="ajaxjs.js"></script>
     <script>
-
         let data = "";
         // let url = 'http://127.0.0.1:3000/index'
         let btn = document.querySelector("button");
-        btn.onclick = function ({url,type,data,dataType}) {
+        btn.onclick = function ({
+            url,
+            type,
+            data,
+            dataType
+        }) {
             //每次点击就创建一个ajax线程
-            var worker = new Worker("ajax.js")
+            var worker = new Worker("workerAjax.js")
             worker.onmessage = function (e) { //事件
                 console.log(e.data)
                 var nums = document.getElementById("nums") //测试可删掉
@@ -31,25 +35,35 @@
             }
             if (typeof url === "undefined") { //如果url未定义
                 let url = 'http://127.0.0.1:3000/index'; //默认发送地址 
-                worker.postMessage({url,type:'get',data:"",dataType:"json"}); //向wes.js发送参数
+                worker.postMessage({
+                    url,
+                    type: 'get',
+                    data: "",
+                    dataType: "json"
+                }); //向wes.js发送参数
             } else {
-                worker.postMessage({url,type:'get',data:"",dataType:""});
+                worker.postMessage({
+                    url,
+                    type: 'get',
+                    data: "",
+                    dataType: ""
+                });
             }
         }
 
-        
-        let btn2=document.querySelectorAll('button')[1];
-        btn2.onclick=function(){
-            (async function(){
-      var res=await ajax({
-          url:"http://localhost:3000/index",
-          type:"get",
-          dataType:"json"
-      })
-      .then(res=>{
-          console.log(res)
-      })
-  })();
+
+        let btn2 = document.querySelectorAll('button')[1];
+        btn2.onclick = function () {
+            (async function () {
+                var res = await ajax({
+                        url: "http://localhost:3000/index",
+                        type: "get",
+                        dataType: "json"
+                    })
+                    .then(res => {
+                        console.log(res)
+                    })
+            })();
         }
     </script>
 </body>
