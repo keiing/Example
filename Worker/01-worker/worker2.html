@@ -8,6 +8,13 @@
 </head>
 <body>
     <script>
+       /*
+       Worker.onerror：指定 error 事件的监听函数。
+       Worker.onmessage：指定 message 事件的监听函数，发送过来的数据在Event.data属性中。
+       Worker.postMessage()：向 Worker 线程发送消息。
+       Worker.terminate()：立即终止 Worker 线程。
+       */
+
         let worker=new Worker('worker2.js');
         worker.addEventListener('message',function(e){
             console.log(e.data)
