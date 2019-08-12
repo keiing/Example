@@ -1,5 +1,6 @@
 function ajax({ type, url, data, dataType, header }) {
   type = type.toLowerCase();
+  if(data!=undefined)
   data = JSON.stringify(data)
     .replace(/"|'/g, "")
     .replace(/\s*:\s*/g, "=")

@@ -33,22 +33,9 @@
                 //为了以防万一每次结束客户端页使用强行关闭
                 worker.terminate();
             }
-            if (typeof url === "undefined") { //如果url未定义
-                let url = 'http://127.0.0.1:3000/index'; //默认发送地址 
-                worker.postMessage({
-                    url,
-                    type: 'get',
-                    data: "",
-                    dataType: "json"
-                }); //向wes.js发送参数
-            } else {
-                worker.postMessage({
-                    url,
-                    type: 'get',
-                    data: "",
-                    dataType: ""
-                });
-            }
+            //如果url未定义
+            url = url || 'http://127.0.0.1:3000/index'; //默认发送地址 
+            worker.postMessage({ url, type: 'get', data: "", dataType: "json" }); //向wes.js发送参数
         }
 
 
@@ -56,10 +43,10 @@
         btn2.onclick = function () {
             (async function () {
                 var res = await ajax({
-                        url: "http://localhost:3000/index",
-                        type: "get",
-                        dataType: "json"
-                    })
+                    type: "get",
+                    url: "http://localhost:3000/index",
+                    dataType: "json"
+                })
                     .then(res => {
                         console.log(res)
                     })
