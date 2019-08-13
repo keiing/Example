@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 方法3 -->
+    <script type="text/javascript">
+        /*例子:
+        var img=document.createElement('img');
+        img.src="路径"
+        页面显示层，会等页面 加载/下载 完才会去显示；但是这个路径地址内容已经下载了;
+        为什么这么确定！因为有个模式叫灯塔模式
+
+        灯塔模式，灯塔模式是创建一个img标签，
+        然后img标签只做个预加载层面，让他去把src里面的值赋过来之后，
+        他会把img的东西加载过来形成一个预加载，以后再用的时候就方便了，不用2次加载了，到时候去拿缓存就好了；
+        这就是预加载机制，src也一样
+
+        当你把img标签添加到页面时他才会去执行,就是这样的一个过程,这样的过程我们就实现了一个异步加载的过程
+
+
+        */
+        //---------------------
+        var script = document.createElement('script'); //创建script标签
+        script.type = "text/javascript"; //设置语言类型
+        script.src = "async.js" //下载地址中的内容 执行到这一句的时候，系统就会开启一个异步线程去下载js img也是一样的
+        //但是还没有去执行/解析，这个js，只是下载了下来
+        //写完script.src='地址之后' 可以在Network中查看到，已经下载完了，只是没有显示而已,如果看到不可以去Performance中查看
+        //只有把标签插入到页面中去时候才会执行
+        /*  IE
+        script.readyState='loading';
+        IE浏览器如果加载完了就会，动态的修改，ready state的值改为complete或者是loaded;*/
+        document.body.appendChild(script) //只有写到这一句才回去解析
+        if (script.readyState) {
+            script.onreadystatechange = function () {
+                //IE下支持onreadystatechange
+                if (script.readyState == "complete" || script.readyState == "loaded") {
+                    test();
+                    console.log("script.onreadystatechange")
+                }
+            }
+        } else {
+            script.onload = function () {
+                //而且这个方法兼容性非常好
+                //兼容Safari chrome firefox opera IE9和IE9以上已经兼容script.onlaod事件
+                test();
+                console.log('script.onload')
+                //IE的兼容状态
+
+            }
+        }
+        //src有个发送请求，回资源的一个过程,在发生这个过程之间他就把test()方法执行了，所以肯定会报错
+        // test();
+    </script>
+</body>
+
+</html>

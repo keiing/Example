@@ -134,9 +134,10 @@
     return jQuery;
 })(window);
 //为什么要传入一个window和一个undefined
-/**window 处于性能上的考虑,因为js是链式查找，
+/**1.window 处于性能上的考虑,因为js是链式查找，
   window就会自动隐士转换成局部变量，在函数内进行使用window时
   就不会向上查找了，因此就提高了代码效率;保证window能最快的能被查找到
+  2.对压缩有好处
   */
 /**undefined  undefined=123没有问题 不会报错 null=123就会报错,
  所以我们就看出来undefined就是一个全局变量,向匿名函数注入undefined的原因有

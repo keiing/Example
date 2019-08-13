@@ -66,13 +66,15 @@
                 //window.outerWidth;计算宽度 不包含margin
                 //elem.clientWidth;即对象宽度加上Padding宽
                 //elem.scrollWidth;即对象宽度加上Padding宽
+
+                //获取高度每次都会触发重排
                 var boxWidth = allBox[0].scrollWidth; //一个盒子的宽度
                 fnconsoleLog(boxWidth, 'boxWidth')
                 var screenWidth = window.innerWidth; //可见区域宽度 计算打开的控制台
                 fnconsoleLog(screenWidth, 'screenWidth')
                 var cols = parseInt(screenWidth / boxWidth); //获得列数
                 fnconsoleLog(cols, 'cols列数');
-                //---------------减少重绘
+                //---------------减少重排
                 if (Cols !== cols || Cols === undefined) {
                     allBox.forEach((value, index, array) => array[index].setAttribute('style', ""))
                     Cols = cols;

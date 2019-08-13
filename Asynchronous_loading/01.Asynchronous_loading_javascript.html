@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- IE使用 等到页面全部解析完毕才会执行 -->
+    <script type="text/javascript" src="js.js" defer></script>
+    <!-- 符合W3C标准使用，加载完毕立刻执行 -->
+    <script type="text/javascript" src="js.js" async></script>
+    <!-- 以上两种方法都不实用，除非不考虑兼容，单独用一个 -->
+    <!-- 请看02.Asynchronous_loading -->
+</head>
+<body style="font:19px '微软雅黑';text-align: center;">
+    
+    <div>
+        <h3>铺垫-JSON</h3>
+        先来谈谈json格式
+        什么是json格式
+        '{"name":"deng","age":123}'
+        这就是json格式
+        json字符串<br>
+        JSON.parse()将json字符串装换为对象，称反序列化
+        JSON.stringify()将对象转换为json字符串,称序列化
+        <br>
+        再来谈谈什么是json
+        JSON是一种传输数据的格式(以对象为样板，本质上就是对象，
+        但用途有区别，对象就是本地用的，json是用来的传输的)
+        JSON.parse();string——> json<br>
+        JSON.stringify();json——>string
+    </div>
+    <hr style="margin-top:30px;">
+    <div>
+        <h3>异步加载js</h3>
+        <h4>Asyncchronous loading</h4>
+        js加载的缺点:加载工具方法没必要阻塞文档，
+        过得js加载会影响页面效率，一旦网速不好，
+        那么整个网站将等待js加载而不运行后续渲染等工作；<br>
+        有些工具方法<span style="color:red">按需加载</span>,用到再加载，
+        不用不加载。<br>
+        <p style="background: #000;color:#fff;">
+            这个javascript从此就变成了异步加载了，但是只有IE9以下浏览器可以使用----->defer是IE给自己提供的方法IE9以下可以顺利的使用
+            ，defer标签的执行时刻，不会下载完就立刻执行，而是整个页面解析完毕时，才会执行
+            <br>
+            &lt;script &nbsp;src="路径/标签内部写js内容" &nbsp; type="text/javascript" &nbsp;defer &gt;&lt;/script&gt;<br>
+        </p>
+        <p style="background: #000;color:#fff;">
+            async是W3C标准方法
+            async异步加载，和defer不同，async是加载完立刻执行，执行也是异步执行
+            非IE浏览器使用，IE高版本也可以使用，如:IE9以上，符合W3C标准就可以使用
+            浏览器可以使用----->但是async只能执行外部脚本 如：src="路径"不能在标签内，写js内容了
+            &lt;script&nbsp;src="路径" &nbsp; type="text/javascript" &nbsp; async &gt;&lt;/script&gt;<br>
+        </p>
+        <p>
+            &lt;script &nbsp; type="text/javascript" &nbsp; &gt;&lt;/script&gt;<br>
+            自己封装
+            3.创建script，插入到DOM中，加载完毕后callBack，
+        </p>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <hr>
+    <div style="background:linear-gradient(30deg,rgb(212, 212, 212),rgb(58, 35, 35));color:rgb(255, 255, 255);">
+            javascript 异步加载的三种方案
+        <p>1.defer异步加载，但要等到dom文档全部解析完才会被执行。只有IE能用，也可以将代码写到内部。</p>
+            1.2执行时也不阻塞页面
+            IE浏览器专用
+        <p>2.async异步加载，加载完就执行，async只能加载外部脚本，不能把js写在script标签里。
+            async是W3C标准方法，async——>asychronous  异步 
+            asychronous javascript and xml ---ajax 的全程
+            非IE浏览器使用，IE高版本也可以使用，如:IE9以上，符合W3C标准就可以使用
+        </p>
+        <p>3.创建script，插入到DOM中，加载完毕后callBack，</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+var obj={
+    obj:{
+        test:function(){
+            console.log('test2');
+        },
+        demo:function(){
+            console.log('demo')
+        },
+        obj:{
+            test3:function(){console.log("test3")},
+            demo3:function(){},
+        }
+    },
+    test:function(){
+        console.log("我还很菜需要继续深造")
+        window.onclick=function(){
+            console.log('test')
+        }
+    },
+    demo:function(){
+        console.log('demo')
+    }
+}
+function test(){
+    console.log('testwindow')
+}
+test.test2=function(){
+    console.log('11')
+}
