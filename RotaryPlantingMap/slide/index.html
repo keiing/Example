@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    #banner{
+        margin: 0 auto;
+        width:500px;
+        height: 300px;
+        outline: 10px solid;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="banner">
+
+    </div>
+    <script src="slide.js"></script>
+    <script>
+        createBannerArea(document.getElementById('banner'), [{
+            imgUrl: "http://bai.spbldw.com/img/bj1.jpg",
+            link: "http:baidu.com"
+        }, {
+            imgUrl: "http://bai.spbldw.com/img/bj2.jpg",
+            link: "http:baidu.com"
+        }, {
+            imgUrl: "http://bai.spbldw.com/img/bj4.jpg",
+            link: "http:baidu.com"
+        }])
+    </script>
+</body>
+
+</html>
