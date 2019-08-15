@@ -43,6 +43,18 @@
       9、当所有async的脚本加载完成并执行后、img等加载完成后，document.readyState='complete'，window对象触事件。
       10、从此，以异步响应方式处理用户输入、网络事件等。
      */
+
+        //  window.onload是等到所有东西全加载完执行
+        window.onload=function(){
+
+        }
+        //如果要把script放到html上面，最好使用DOMContentLoaded
+         document.addEventListener('DOMContentLoaded',function(){
+            document.onreadystatechange=function(){
+             console.log(document.readyState)
+            }
+         },false)
+         //jQuery中$(document).ready(function(){}) 当dom解析完就执行的部分 等效于上面的DOMcontentLoaded
     </script>
 </body>
 </html>
