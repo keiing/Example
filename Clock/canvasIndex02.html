@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id='canvas' width="400" height="400"></canvas>
+    <script>
+        var canvas = document.getElementById('canvas'); //画幕/舞台
+        var context = canvas.getContext('2d'); //画笔/演员
+        var newDate = new Date();
+        var hours = newDate.getHours(); //时
+        var mis = newDate.getMinutes(); //分
+        var sec = newDate.getSeconds(); //秒
+        var hoursValue = (hours * 30 - 90) * Math.PI / 180; //时针度数
+        var misValue = (mis * 6 - 90) * Math.PI / 180; //分针度数
+        var secValue = (sec * 6 - 90) * Math.PI / 180; //秒针度数
+        console.log(hours, mis, sec)
+        init();
+        draw();
+        setInterval(() => {
+            draw();
+            newDate = new Date();
+            hours = newDate.getHours(); //时
+            mis = newDate.getMinutes(); //分
+            sec = newDate.getSeconds(); //秒
+            hoursValue = (hours * 30 - 90) * Math.PI / 180; //时针度数
+            misValue = (mis * 6 - 90) * Math.PI / 180; //分针度数
+            secValue = (sec * 6 - 90) * Math.PI / 180; //秒针度数
+        }, 1000)
+
+        function init() {
+            // 圆环
+            for (let i = 0; i < 60; i++) {
+                context.beginPath();
+                context.moveTo(200, 200);
+                context.arc(200, 200, 150, 6 * i * Math.PI / 180, 6 * (i + 1) * Math.PI / 180);
+                //arc方法有五个参数，{绘制的圆弧圆心坐标x,y，半径，起始坐标(弧度)，结束坐标(弧度)}
+                context.closePath();
+                context.stroke();
+            }
+            //实心圆
+            context.beginPath();
+            context.moveTo(200, 200);
+            context.fillStyle = "rgba(255,255,255,1)"
+            context.arc(200, 200, 150 * 19 / 20, 0, 360 * Math.PI / 180);
+            context.fill();
+            //时针轴
+            for (let i = 0; i < 12; i++) {
+                context.beginPath();
+                context.moveTo(200, 200);
+                context.arc(200, 200, 150, 30 * i * Math.PI / 180, 30 * (i + 1) * Math.PI / 180);
+                context.closePath();
+                context.stroke();
+            }
+            //实心圆
+            context.beginPath();
+            context.moveTo(200, 200);
+            context.fillStyle = "#fff";
+            context.arc(200, 200, 150 * 18 / 20, 0, 360 * Math.PI / 180);
+            context.fill();
+        }
+
+        function draw() {
+            context.closePath()
+            //秒针
+            context.beginPath();
+            context.moveTo(200, 200);
+            context.arc(200, 200, 150 * 16 / 20, secValue, secValue)
+            context.stroke();
+            //分针
+            context.beginPath();
+            context.moveTo(200, 200);
+            context.lineWidth = 2;
+            context.strokeStyle = "#E3E3E3"
+            context.arc(200, 200, 150 * 14 / 20, misValue, misValue)
+            context.stroke();
+            //时针
+            context.beginPath();
+            context.moveTo(200, 200); //圆心
+            context.lineWidth = 4;
+            context.strokeStyle = "#000"
+            context.arc(200, 200, 150 * 10 / 20, hoursValue, hoursValue)
+            context.stroke();
+           
+        }
+    </script>
+</body>
+
+</html>

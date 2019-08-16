@@ -5,32 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
+    <style>
+    .imgs{
+      width:300px;
+      height: 300px;
+    }
+    </style>
   </head>
   <body>
     <div>
       1.前后数据交互<br />
       2.利用第三方插件实现懒加载<br />
       3.手写懒加载<br />
+      <h3>如何实现懒加载</h3>
+    </div>
+    <div id="content">
+      <!-- 图片容器 -->
     </div>
     <!-- 这里为了省事直接引用封装过的ajax -->
     <script src="../Worker/02-worker-ajax/ajaxjs.js"></script>
     <script>
       (function(window, undefined) {
+        /**
+         * 实现原理
+         * <img src="" data-src="真实路径" width="150" height="150">
+         * */ 
         let fnajax=(type,url,data)=>ajax({type: type,url: "http://127.0.0.1:3000/"+url,data: data,dataType:"json"});
         (async function() {
           result = await fnajax("get","imageJson",{uname: "zhangsan",upass: 123456});
           result1 = await fnajax('post','index',{uname:"zhangsan",upass:123456});
          var result3=(JSON.parse(result1));
-         console.log(result3)
+         if(result3 && result3.length>1){
          var images=document.createDocumentFragment()
           for(var i=0;i<result3.length;i++){
             var img=document.createElement('img');
-            img.src="http://127.0.0.1:3000/"+result3[i]['image'];
-            img.width="300"
-            img.height="300";
+            img.setAttribute("data-id","http://127.0.0.1:3000/"+result3[i]['image']);
+            img.className="imgs";
+            img.src="lazyLoad.gif"
             images.appendChild(img)
           }
-          document.body.appendChild(images)
+          document.getElementById('content').appendChild(images)
+        }
         })();
       })(window);
     </script>
