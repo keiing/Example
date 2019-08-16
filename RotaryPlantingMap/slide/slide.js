@@ -1,7 +1,10 @@
 /**
  * 最后一张跳转第一张效果，并无无限播放
- * param {*} areaDom 轮播图区域，是一个dom元素
- * param {*} options 轮播图配置
+ * @param {*} areaDom 轮播图区域，是一个dom元素
+ * @param {*} options 轮播图图片/跳转地址
+ * @param {*} isDisplay 是否设置左右切换按钮
+ * @param {*} dataTime 轮播时间
+ * @param {*} liColor li颜色
  */
 function createBannerArea(areaDom, options, isDisplay, dataTime, liColor) {
     dataTime = dataTime || {};

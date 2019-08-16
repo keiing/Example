@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id='water'></div>
+    <script src="../../Worker/02-worker-ajax/ajaxjs.js"></script>
+    <script src="watefall.js"></script>
+    <script>
+        (function (window, undefined) {
+            document.addEventListener("DOMContentLoaded", function (event) {
+                window.data;
+                (async function () {
+                    var promise = await ajax({
+                        type: 'post',
+                        url: 'http://127.0.0.1:3000/index',
+                        data: {
+                            uname: "zhangsan",
+                            upass: 123456
+                        },
+                        dataType: 'json'
+                    });
+                    var divDom=await document.getElementById('water');
+                    watefall(divDom,JSON.parse(promise),220);
+                })()
+            }, false)
+        })(window);
+    </script>
+</body>
+
+</html>
