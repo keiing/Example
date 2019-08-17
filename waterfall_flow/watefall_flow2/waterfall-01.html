@@ -8,11 +8,14 @@
     <title>Document</title>
     <style>
     #water{
-        position: relative;
         width:90%;
         margin: 0 auto;
         outline: 3px solid;
+        background: #000;
     }
+    /* #water img{
+        transition: all 1.5s;
+    } */
     </style>
 </head>
 
@@ -21,24 +24,24 @@
     <script src="../../Worker/02-worker-ajax/ajaxjs.js"></script>
     <script src="watefall.js"></script>
     <script>
-        (function (window, undefined) {
-            document.addEventListener("DOMContentLoaded", function (event) {
-                window.data;
-                (async function () {
-                    var promise = await ajax({
-                        type: 'post',
-                        url: 'http://127.0.0.1:3000/index',
-                        data: {
-                            uname: "zhangsan",
-                            upass: 123456
-                        },
-                        dataType: 'json'
-                    });
-                    var divDom=await document.getElementById('water');
-                    watefall(divDom,JSON.parse(promise),220);
-                })()
-            }, false)
-        })(window);
+       (function (window, undefined) {
+    document.addEventListener("DOMContentLoaded", function (event) {
+        window.data;
+        (async function () {
+            var promise = await ajax({
+                type: 'post',
+                url: 'http://127.0.0.1:3000/index',
+                data: {
+                    uname: "zhangsan",
+                    upass: 123456
+                },
+                dataType: 'json'
+            });
+            var divDom=await document.getElementById('water');
+            watefall(divDom,JSON.parse(promise),180);
+        })()
+    }, false)
+})(window);
     </script>
 </body>
 
