@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div>111</div>
+    <div>222</div>
+    <div>333</div>
+    <script>
+        (function(gloabl,undefined){
+            function Library(selector){
+                return new Library.fn.init(selector)
+            }
+            Library.fn=Library.prototype={
+                constructor:Library,
+                init:function(selector){
+                    var elements=document.querySelectorAll(selector);
+                    for(var i=0;i<elements.length;i++){
+                        this[i]=elements[i];
+                    }
+                    this.length=elements.length;
+                    // return this;
+                },
+                css:function(name,value){
+                    for(var i=0;i<this.length;i++){
+                        var el=this[i];
+                        el.style[name]=value;
+                    }
+                    return this;
+                },
+                html:function(content){
+                    for(var i=0;i<this.length;i++){
+                        this[i].innerHTML=content;
+                    }
+                    return this;
+                }
+            }
+
+            Library.fn.init.prototype=Library.prototype;
+            window.$=window.Library=Library;
+
+        })(window)
+        $('div').css('color','red').html('体验极差Bug极多').css('background','green')
+    </script>
+</body>
+</html>

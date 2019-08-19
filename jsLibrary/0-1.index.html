@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>001</div>
+    <div>002</div>
+    <div>003</div>
+    <p>p001</p>
+    <span class="txt">555</span>
+    <script>
+        (function (gloabl) {
+            function Library(selector) {
+                return new Fn(selector)
+            }
+
+            function Fn(selector) {
+                var elements = document.querySelectorAll(selector);
+                for (var i = 0; i < elements.length; i++) {
+                    this[i] = elements[i];
+                }
+                this.length = elements.length;
+            }
+            Fn.prototype = {
+                //修改prototype，否则指向Object
+                constructor:Fn,
+                css: function (name, value) {
+                    for (var i = 0; i < this.length; i++) {
+                        var el = this[i];
+                        el.style[name] = value;
+                    }
+                    return this;
+                },
+                html:function(content){
+                    for (var i = 0; i < this.length; i++) {
+                        var el = this[i];
+                        content?el.innerHTML = content:false;
+                    }
+                }
+            }
+            window.$ = Window.Library = Library;
+        })(window)
+        console.log($('div').css('color', "red"));
+        $('p').css('color', "green")
+        $('.txt').css('color', '#0f5').html('6666')
+        $('div');
+
+
+
+
+
+
+
+
+
+
+        // (function (gloabl) {
+        //     function Library(selector) {
+        //         return new Fn(selector);
+        //     }
+        //     //原声的对象结构被破坏了，造成了对象结构的污染
+        //     // HTMLCollection.prototype.css = function () {
+        //     //     console.log('唱的双')
+        //     // }
+        //     function Fn(selector){
+        //         //jQuery 选择器，有封装了库 ，sizzle 实现选择器
+        //         var elements=document.querySelectorAll(selector);
+        //         //fn对象上有一个element属性，他的值就是elements
+        //         this.elements=elements;
+        //     }
+        //     Fn.prototype.css=function(name,value){
+        //         for(var item of this.elements){
+        //             item.style[name]=value;
+        //         }
+        //     }
+        //     window.$ = window.Library = Library;
+        // })(window);
+        // $('div').css('color','red');
+        // $('p').css('color','#f50');
+        // $('.txt').css('color',"green")
+        //存在问题，每一个element上都会有一个css方法，非常浪费内存，改进？
+        //如何去改进
+
+        //在原型 上添加
+        //构造函数，是一种特殊的方法，主要是用来创建对象是，初始化对象的
+
+
+        /*
+        1.所有的引用类型 （数组，函数，对象）可以自由扩展属性(Null除外);
+        2.所有的引用类型都有个 __proto__属性（隐式原型，本身也是一个普通的对象）
+        3.所有的函数都有一个prototype属性 (显示原型)，prototype是函数独有都
+        4.所有的引用类型 __proto__属性指向他的构造函数 prototoype  属性
+        5.当试图得到一个对象的属性的时候，如果这个对象本身不存在这个属性，它会去__proto__属性
+
+        我们一个原型链的理论
+        */
+        /*
+        破坏了原声的对象结果，不建议使用
+
+        数据
+
+        sum 求和
+
+        导致对象结构的污染，所以一般不建议大家去修改原声的对象结构
+        */
+    </script>
+</body>
+
+</html>
