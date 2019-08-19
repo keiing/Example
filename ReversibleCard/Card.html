@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        body {
+            background: #ccc;
+        }
+
+        .wrapper {
+            width: 500px;
+            height: 500px;
+            margin: 100px auto;
+        }
+
+        .wrapper li {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            display: inline-block;
+            /*让div横过来排成一行*/
+            margin: 5px;
+            perspective: 400px;/*transform景深*/
+        }
+
+        .wrapper li img {
+            width: 100%;
+            height: 100%;
+        }
+        /* <!-- transfrom-style:preserve-3d; --> */
+        .picBox{
+            transform-style: preserve-3d;
+            transform-origin: 50% 50%  100px;
+            animation: 1000ms ease-out oms 1 normal forwards;
+        }
+        .picBox,.show,.hide{
+            position:absolute;
+            top:0;
+            left: 0;
+            bottom:0;
+            right: 0;
+        }
+        .hide{
+            background: black;
+            color:white;
+            text-align: center;
+            line-height:200px;
+            font-size:20px;
+            transform: translate3D(0,0,-1px)/*3d*/
+        }
+        .out-top .hide,
+        .in-top .hide{
+            transform-origin:0 100%;
+            transform: translate3d(0,-100%,0) rotate3d(1,0,0,90deg);
+        }
+
+        .in-top .picBox{
+            animation-name:in-top;
+        }
+        .out-top .picBox{
+            animation-name:out-top;
+        }
+        @keyframes in-top{
+            from{transform:rotate3d(0,0,0deg);}
+            to{transform: rotate3d(-1,0,360deg)}
+        }
+        @keyframes out-top{
+            from{transform:rotate3d(-0,0,0deg);}
+            to{transform: rotate3d(0,0,360deg)}
+        }
+
+    </style>
+    
+    <!-- <link rel="stylesheet" href="transtion.css"> -->
+</head>
+<style>
+
+</style>
+
+<body>
+    <div class="wrapper">
+        <ul>
+            <li>
+                <div id="box" class="picBox">
+                    <div class="show">
+                        <img src="1.jpg" alt="">
+                    </div>
+                    <div class="hide">
+                            <img src="2.jpg" alt="">
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="picBox">
+                    <div class="show">
+                        <img src="1.jpg" alt="">
+                    </div>
+                    <div class="hide">
+                        这里是文字
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="picBox">
+                    <div class="show">
+                        <img src="1.jpg" alt="">
+                    </div>
+                    <div class="hide">
+                            <img src="2.jpg" alt="">
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="picBox">
+                    <div class="show">
+                        <img src="1.jpg" alt="">
+                    </div>
+                    <div class="hide">
+                        这里是文字
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <script src="Card.js"></script>
+</body>
+
+</html>
