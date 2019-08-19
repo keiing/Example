@@ -35,8 +35,6 @@ function watefall(areaDom, urls, everyWidth) {
         }, 500)
     }
     document.addEventListener('scroll', function () {
-        console.log('1111')
-        console.log('可见高度')
         lazyload();
     })
     /**
