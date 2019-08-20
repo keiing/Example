@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>applay和call方法</title>
+</head>
+<body>
+    <div>我是div</div>
+    <div>我是div</div>
+    <div>我是div</div>
+    <script>
+    /**
+     * apply和call方法的作用:专门修改方法内部的this
+     * 
+     * 格式：
+     * call(对象，参数1，参数2)；
+     * apply(对象，数组)
+    */
+   function test(){
+       console.log(this);
+   }
+   var obj={"name":"linj"}
+   /**
+    * 1.通过window.test找到test方法
+    * 2.通过apply(obj)将找到的test方法 ，将内部的this修改为自义定的对象
+   */
+  window.test.apply(obj);
+  window.test.call(obj)
+   function sum(a,b){
+       console.log(this);
+       console.log(a+b);
+   }
+   /**
+    * 1.通过window.sum找到sum方法
+    * 2.通过apply(obj)/call(obj)将找到的sum方法内部的this修改为自义定的对象
+    * 3.将传入数组中的元素依次取出，传递给形参
+   */
+   window.sum.call(obj,1,2);
+   window.sum.apply(obj,[1,2])
+
+   var arr=[];
+   arr.push(1);
+   console.log(arr,"arr")
+   
+   //将真数组转换为伪数组的一个过程
+   var arr1=[1,3,5,8,9];
+   var obj1={};
+   [].push.apply(obj1,arr1);
+   console.log(obj1,"arr1");
+
+   //那么如何将为数组转换为真数组呢
+   window.onload=function(event){
+       //系统自带的伪数组
+       var div=document.querySelectorAll("div");
+
+       //自定义的伪数组
+       var obj2={0:"lnj",1:"33",length:2};
+       var arr2=[];//真数组
+       //[].push.apply 在IE8或者IE8以下无效
+    Array.prototype.push.apply(arr2,obj2)
+    console.log(arr2,'arr2');
+
+    //在IE8或者IE8以下不报错使用方法
+    var obj3={0:"lnj",1:"33",2:"324w",length:3};
+    //使用slice方法
+    var arr3=[].slice.call(obj3);
+    console.log(arr3,"arr3")
+   }
+   
+   //所以如果将伪数组转为真数组那么可以使用 slice方法
+//    var 变量=[].slice.call(数组/对象)
+  //将真数组转换为伪数组
+//   var 变量=[].push.apply(接受参数，传入参数),arr1);
+    </script>
+</body>
+</html>

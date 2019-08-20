@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="ceshi">
+
+    </div>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <script src="./02jQuery.js"></script>
+    <script>
+        /**
+         * 1.jQuery的本质是闭包
+         * 2.jQuery为什么要使用必要来实现?为了避免多个框架冲突
+         * 3.jQuery如何让外界访问内部定义的局部变量 window.xxx=xxx;
+         * 4.jQuery为什么要给自己传递一个window参数？1.提高查找效率-2.为了后期压缩代码
+         * 5.jQuery为什么要给自己传递一个undefined参数?1.防止undefined被篡改
+         
+        (function(window,undefined){
+            jQuery=function(){
+                return new jQuery.prototype.init();
+            }
+            jQuery.prototype={
+                constructor:jQuery
+            }
+            jQuery.prototype.init.prototype=jQuery.prototype;
+        window.jQuery=window.$=jQuery;
+        })(window)
+        */
+    //    console.log($());
+    //    console.log($("<div><p>1</div>"));
+    //    console.log($(" <div><p>1</p></div><div><p>2</p></div>"));
+    // console.log($('#ceshi'))
+    // console.log($('div'))
+    // console.log($('li'))
+    var arr=[1,2,3,4,5];
+    console.log($(arr))
+    var linkArr={0:"linj",1:"332",2:"male",length:3};
+    console.log($(linkArr))
+    console.log(typeof linkArr)
+    console.log(arr.toString())
+    console.log(linkArr.toString())
+    //    console.log($(null));
+    //    console.log($(undefined));
+    //    console.log($(NaN));
+    //    console.log($(0));
+    //    console.log($(false));
+    console.log((({}).toString.apply(arr)))
+    </script>
+</body>
+</html>
