@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div>div</div>
+    <script>
+    /**
+     * onload方法会等到DOM元素加载完毕，还对等到资源也加载完毕才会执行
+     */
+    /**
+     * window.onload=function(ev){
+     * var result=document.querySelector('div');
+     * console.log(result)
+     * }
+     */
+    
+     window.onload=function(ev){
+    //   var result=document.querySelector('div');
+      console.log('onload')
+     }
+     //详细参考 ../Asynchronous_loading 文件夹内的触发事件
+     //addEventListener不支持EI8以及更低版本的IE浏览器 使用 ->解决使用 attachEvent
+     //EI8以及更低版本的IE浏览器 也不支持DOMContentLoaded事件
+     document.addEventListener('DOMContentLoaded',function(){
+         var result=document.querySelector('div');
+         console.log(result,'DOMContentLoaded')
+        })
+        //IE低版本浏览器使用下面方法进行坚挺
+        document.attachEvent('onreadystatechange',function(){
+            if(document.readyState=="complete"){
+                console.log('onreadystatechange')
+            }
+        });
+    </script>
+</body>
+</html>
