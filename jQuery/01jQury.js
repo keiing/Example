@@ -6,9 +6,10 @@
 //寻龙千万看缠山，一重缠是一重关，关门若有千重锁，定有王候居此间
 //看框架县先理架构，再看入口 调用的入口，依流程读下去;
 
-(function (window, undefined) {
+(function (window,factory, undefined) {
     "use strict";
     //工厂模式
+    
     var jQuery = function (selector,content) {
         return new jQuery.fn.init(selector,content);
     }
@@ -41,7 +42,7 @@
     };
     //$.extend({}) 只给入一个对象，那么就把这个对象加入到jquery.prototype中
     //$.extend({},{a:23}) 如果给两个对象，就会把两个对象合并，并且返回出去
-    jQuery.extend = jQuery.fn.extend =jQuery.prototype.init.extend= function () {
+    jQuery.fn.extend =jQuery.prototype.extend= function () {
         //接受一个对象，然后把这个对象扩展到jquery上
         /** 
         //---------------------------------------------------
@@ -96,7 +97,9 @@
     jQuery.prototype = jQuery.prototype.init.prototype = jQuery.fn;
 
     window.jQuery = window.$ = jQuery;
-})(window);
+}(typeof window!=="undefined"?window:this,function(window,factory){
+
+}))
 //为什么要传入一个window和一个undefined
 /**1.window 处于性能上的考虑,因为js是链式查找，
   window就会自动隐士转换成局部变量，在函数内进行使用window时

@@ -26,12 +26,49 @@
          * 6.toArray 把实例转换为数组返回
          * 7.get 获取指定下标元素，获取的是原生DOM，get如果不穿参数，相当于调用toArray()方法
          * 8.eq获取制定下表的元素，获取的是jQuery类型的实例对象
+         * 9.first 获取实例中的第一个元素，是jQuery类型的实例对象
+         * 10.last 获取实例中的最后一个元素，是jQuery类型的实例对象
+         * 11.each 便利实例，把便利到的数据传给回调使用，修改原数组
+         * 12.map 便利实例，把便利到的数据传给回调使用，然后吧回调的返回值收集起来组成一个新数组返回
          */
-        (function (window, undefined) {
-            var jQuery = function (selector) {
-                return new jQuery.prototype.init(selector);
+
+        /**
+         * 四.jQueryDOM操作方法
+         */
+        (function (global, factory) {
+            if (typeof module === "object" && typeof module.export === "object") {
+                module.export = window.document ?
+                    factory(window, true) :
+                    function (window) {
+                        if (!window.document) {
+                            throw new Error('jQuery requries a window with a document')
+                        }
+                        return factory(window);
+                    }
+            } else {
+                factory(window);
             }
-            jQuery.prototype = {
+
+        }(typeof window !== "undefined" ? window : this, function (window, factory) {
+            var vision = "1.0.2",
+                jQuery = function (selector) {
+                    return new jQuery.fn.init(selector);
+                },
+                _jQuery = window.jQuery,
+                _$ = window.$,
+                document = window.document,
+                noGlobal=!window;
+            var arr = [],
+                slice = arr.slice,
+                concat = arr.concat,
+                push = arr.push,
+                indexOf = arr.indexOf;
+            var classtype={},
+                toString=classtype.toString,
+                has=classtype.hasOwnProperty,
+                support={};
+
+            jQuery.prototype=jQuery.fn = {
                 constructor: jQuery,
                 init: function (selector) {
                     selector = jQuery.trim(selector)
@@ -55,19 +92,23 @@
                                 this[i] = elem.children[i];
                             }
                             //2.1.3给jQuery对象添加length属性
-                            this.length = elem.children.length; 
+                            this.length = elem.children.length;
                             */
                             [].push.apply(this, elem.children)
                             //2.1.4返回加工好的this(jQuery)
                         }
-                        //2.2 判断是否是选择器
+                        //2.2 判断是否是选择器 选择器需要改进
                         else {
+                            /** 
                             //2.2.1根据传入的选择器找到对应的元素
                             var elem = document.querySelectorAll(selector);
                             //2.2.2将找到的元素添加到jQuery上
                             [].push.apply(this, elem)
                             //2.2.3返回加工上的this
                             //现在没有对length==1处理，只返回了伪数组
+                            */
+                            //封装dom
+                            jQuery.sizzle.call(this, selector)
                         }
                     } //3.数组
                     else if (jQuery.isArray(selector)) {
@@ -90,14 +131,17 @@
                         this[0] = selector;
                         this.length = 1;
                     }
+                    this.selector=selector;
+                    this.content=document;
+                    this.prevObject=this;
                     return this;
                 },
-                jQuery: "1.0.2", //版本号
+                jQuery: vision, //版本号
                 selector: "", //默认选择器
                 length: 0, //默认长度
-                push: [].push, //[].push找到数组的push方法，相当于[].push.apply(this)
-                sort: [].sort,
-                splice: [].splice,
+                push:push, //[].push找到数组的push方法，相当于[].push.apply(this)
+                sort: arr.sort,
+                splice: arr.splice,
                 toArray: function () { //伪转换为真数组
                     return [].slice.call(this);
                 },
@@ -118,18 +162,18 @@
                         return jQuery(this.get(num))
                     }
                 },
-                first:function(){
+                first: function () {
                     return this.eq(0);
                 },
-                last:function(){
+                last: function () {
                     return this.eq(-1);
                 },
-                each:function(fn){
-                    return jQuery.each(this,fn);
+                each: function (fn) {
+                    return jQuery.each(this, fn);
                 }
             }
-
-            jQuery.extend = jQuery.prototype.extend = function (obj) {
+            jQuery.prototype.init.prototype = jQuery.prototype=jQuery.fn;
+            jQuery.extend =jQuery.fn.extend= function (obj) {
                 for (var key in obj) {
                     this[key] = obj[key];
                 }
@@ -188,12 +232,16 @@
                         });
                     }
                 },
-                each:function(obj,fn){
+                each: function (obj, fn) {
+
                     //1.判断是否是数组
-                    if(jQuery.isArray(obj)){
-                        for(var i=0;i<obj.length;i++){
-                        obj[i]=fn.call(obj[i],obj[i],i,obj);
-                           /**
+                    if (jQuery.isArray(obj)) {
+                        for (var i = 0; i < obj.length; i++) {
+                            var result = fn.call(obj[i], obj[i], i, obj);
+                            if (result) {
+                                obj[i] = result;
+                            }
+                            /**
                         var result=fn.call(obj[i],obj[i],i,obj);
                         var result=fn.call(key,obj[key],key,obj);
                            if(result===true){
@@ -205,36 +253,141 @@
                         }
                     }
                     //2.判断是否是对象
-                    else if(jQuery.isObject(obj)){
-                        for(var key in obj){
-                            obj[key]=fn.call(key,obj[key],key,obj);
+                    else if (jQuery.isObject(obj)) {
+                        for (var key in obj) {
+                            var result = fn.call(key, obj[key], key, obj);
                         }
+                        if (result) {
+                            obj[key] = result;
+                        }
+
                     }
                     return obj;
                 },
-                map:function(obj,fn){
-                    var result=[];
+                map: function (obj, fn) {
+                    var arr = [];
                     //1.判断是否是数组
-                    if(jQuery.isArray(obj)){
-                        for(var i=0;i<obj.length;i++){
-                        var temp=fn(obj[i],i,obj);
-                            if(temp){
-                                result.push(temp)
+                    if (jQuery.isArray(obj)) {
+                        for (var i = 0; i < obj.length; i++) {
+                            var temp = fn(obj[i], i, obj);
+                            if (temp) {
+                                arr.push(temp)
                             }
                         }
                     }
-                     //2.判断是否是对象
-                     else if(jQuery.isObject(obj)){
-                        for(var key in obj){
-                        var temp=fn(obj[key],key,obj);
-                        if(temp){
-                            result.push(temp)
+                    //2.判断是否是对象
+                    else if (jQuery.isObject(obj)) {
+                        for (var key in obj) {
+                            var temp = fn(obj[key], key, obj);
+                            if (temp) {
+                                arr.push(temp)
                             }
                         }
                     }
-                    return result;
+                    return arr;
                 }
             });
-            jQuery.prototype.init.prototype = jQuery.prototype;
-            window.jQuery = window.$ = jQuery;
-        })(window)
+            jQuery.fn.extend({
+                empty: function () {
+                    //便利找到所有的元素
+                    this.each(function (value, index) {
+                        value.innerHTML = "";
+                    })
+                    return this;
+                },
+                remove: function (sele) {
+                    if (arguments.length === 0 || arguments[0] === "") {
+                        //便利找到所有的元素
+                        this.each(function (value, index) {
+                            //根据便利到的元素找到对应的父元素
+                            var parent = value.parentNode;
+                            //通过父元素删除指定的元素
+                            parent.removeChild(value)
+                        })
+                    } else {
+                        var $this = this;
+                        //1.根据传入的选择器找到指定的元素
+                        var selector = jQuery.isSelect(sele);
+                        //未改完 判断 是选择器还是标签
+                        //2.遍历找到的元素，获取的对应的类型
+                        $(sele).each(function (value, index) {
+                            var type = value.tagName;
+                            var isName = value.getAttribute(selector);
+                            //3.遍历指定元素
+                            $this.each(function (value, index) {
+                                //4.获取指定元素的类型
+                                var t = value.tagName;
+                                if (selector != "ID" && selector != "CLASS") {
+                                    //5.判断找到元素的类型和指定元素的类型
+                                    if (t === type) {
+                                        var parent = value.parentElement;
+                                        parent.removeChild(value);
+                                        jQuery.prototype.splice.call($this, index, 1)
+                                    }
+
+                                } else {
+                                    //5.判断找到元素的类型和指定元素的类型
+                                    if (t === type && isName === value.getAttribute(selector)) {
+                                        var parent = value.parentElement;
+                                        parent.removeChild(value);
+                                        jQuery.prototype.splice.call($this, index, 1)
+                                    }
+                                }
+                            })
+                        })
+                    }
+                    return this;
+                },
+                html:function(content){
+                    if(arguments.length===0){
+                    return this[0].innerHTML;
+                    }else{
+                        this.each(function(val,index){
+                             val.innerHTML=content;
+                        });
+                    }
+                    return this;
+                },
+                text:function(content){
+                    if(arguments.length===0){
+                        var result="";
+                        this.each(function(value,index){
+                            result+=value.innerText;
+                        })
+                        return result;
+                    }else{
+                        this.each(function(value,key){
+                            console.log();
+                            jQuery.fn.selector=value.innerText=content;
+                        })
+                        console.log(this.selector)
+                    }
+                    return this;
+                },
+                appendTo(){
+
+                }
+            });
+            jQuery.extend({
+                //判断什么类型选择器
+                isSelect(selector) {
+                    if (selector.charAt(0) === "#") {
+                        // console.log('id选择器')
+                        return 'ID'
+                    } else if (selector.charAt(0) === '.') {
+                        // console.log('class选择器')
+                        return 'CLASS'
+                    } else {
+                        return selector;
+                    }
+                },
+                sizzle: function (selector) {
+                    var elem = document.querySelectorAll(selector);
+                    [].push.apply(this, elem)
+                }
+            });
+            if(!noGlobal){
+                window.jQuery = window.$ = jQuery;
+            }
+            return jQuery
+        }));
