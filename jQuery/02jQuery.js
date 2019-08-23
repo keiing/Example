@@ -43,12 +43,20 @@
         /**
          * DOM操作:
          * 8.指定元素.prepend.元素==>将元素添加到指定元素内部的最前面
-         * 9.元素.insertAfter.指定元素==>将元素添加到指定外部的后面
+         * 9.元素.insertAfter.指定元素==>将元素添加到指定外部的后面-->使用·原生的nextSibling属性
          * 10.指定元素.after.元素==>将元素添加到指定元素外部的后面
          * 11.元素.insertBefore.指定元素==>将元素添加到指定元素外部的前面
          * 12.指定元素.before.元素==>将元素添加到指定元素外部的前面
          * 13.元素.replaceAll.指定元素==>替换所有指定元素
          * 14.clone==>复制节点,(true深复制,false浅拷贝)
+         * 
+         */
+        /**
+         * DOM操作
+         * 需要用的nextSibling和previousSibling属性
+         * next([expr]) 获取紧邻的后面同辈元素的元素
+         * prev([expr]) 获取紧邻的前一个同辈元素的元素
+         * 
          */
         (function (global, factory) {
             if (typeof module === "object" && typeof module.export === "object") {
@@ -486,7 +494,7 @@
                     return this;
                 },
                 prepend:function(sele){
-                    // 指定元素.prepend.元素==>将元素添加到指定元素内部的最前面
+                    /* 指定元素.prepend.元素==>将元素添加到指定元素内部的最前面*/
                     if(jQuery.isString(sele)){
                         this.each(function(val){
                             val.innerHTML=sele+val.innerHTML;
@@ -500,33 +508,73 @@
                     }
                     return this;
                 },
-                insertAfter:function(){
-
+                /**after调用者是谁，就会把元素插入到调用者的之后 */
+                after:function(sele){
+                    var $target=$(sele);
+                    var $this=this;
+                    var result=[];
+                    $.each($target,function(val,index){
+                        var parent=val.parentNode;
+                        $this.each(function(value){
+                            if(index===0){
+                                val.after(value)
+                                result.push(value);
+                            }else{
+                                var elem=value.cloneNode(true);
+                                val.after(elem);
+                                result.push(elem);
+                            }
+                        })
+                    })
+                    return result;
                 },/**insertBefore调用者是谁，就会把元素插入到调用者的前面 */
                 insertBefore:function(sele){
-                    var $target = $(sele);
-                    var $this = this;
+                    var $target = $(sele),
+                    $this = this;
                     var result = [];
                     /*1.遍历取出所有指定的元素;*/
-                    $.each($target, function (val, index) {
-                        var parent=val.parentNode;
-                        console.log(parent)
-                        $this.each(function (value) {
+                    $.each($target, function (value, index) {
+                        var parent=value.parentNode;
+                        $this.each(function (val) {
                             /*2.判断当前是否是第0个指定元素*/
                             if (index === 0) {
-                                //在val== 元素 前面 插入value == 被插入元素
-                                parent.insertBefore(value,val)
-                                result.push(value);
+                                //在val==插入元素  val元素 前面 插入 value  value==被插入元素
+                                parent.insertBefore(val,value)
+                                result.push(val);
                                 /*直接添加*/
                             } else {
                                 /*先拷贝再添加*/
                                 var elem = value.cloneNode(true);
-                                parent.insertBefore(elem,val);
+                                parent.insertBefore(elem,value);
                                 result.push(elem)
                             }
                         })
                     });
                     return $(result)
+                },
+                replaceAll(sele){
+                    var $target=$(sele);
+                    var $this=this;
+                console.log($target)
+                    var result=[];
+                    $.each($target,function(value,index){
+                        var parent=value.parentNode;
+                        //2.遍历取出所有的元素
+                        console.log($(value));
+                        $this.each(function(val,key){
+                            if(index===0){
+                                $(val).insertBefore(value);
+                                $(value).remove();
+                                result.push(val);
+                            }else{
+                                var temp=val.cloneNode(true);;
+                               $(temp).insertBefore(value);
+                                $(value).remove();
+                                result.push(temp);
+                            }
+                        })
+                    });
+                    return $(result);
                 }
             });
             jQuery.extend({

@@ -9,8 +9,8 @@
 </head>
 
 <body>
-    <p class='ceshi'>测试p</p>
-    <p class='ceshi'>测试p2</p>
+    <p class='ceshi'>测试p11</p>
+    <p class='ceshi'>测试p2111</p>
     <div class="box">
         <p class="box1">p>box1</p>
         <div class="box2">div>box2</div>
@@ -22,11 +22,11 @@
         <li>2</li>
         <li>3</li>
     </ul>
-    <ul class="ul1">
+    <!-- <ul class="ul1">
         <li>1</li>
         <li>2</li>
         <li>3</li>
-    </ul>
+    </ul> -->
     <script src="./02jQuery.js"></script>
  <!-- <script src="./jquery.js"></script> -->
     <script>
@@ -103,8 +103,26 @@
             // console.log($('<div>11111111111</div>'))
             // console.log($(".ul1").first().append($('div')));
             // console.log($(".ul1").prepend($('div')));
-            console.log($('.ul1').insertBefore('.box1'))
+            // console.log($('.ul1').after('p'));//将ul标签插入到p标签之后
+            // console.log($('.ul1').insertBefore('p'));//将ul标签插入到p标签之前
+            // var a=document.getElementsByClassName('box');
+            // var ul=document.getElementsByClassName('ul1');
+            // console.log(a[0].children[2].after(ul[0]),ul[0])
+            // console.log(a[0].insertBefore(ul[0],a[0].children[2]),ul[0])
+            
             // console.log($('aaa134134134'))
+            $('.ul1').replaceAll('.ceshi');//替换元素；
+            // $('div').insertBefore('p')
+            function replace(source,target){
+                console.log(source,target);
+                // $('.ul1').insertBefore('.ceshi')
+                // $('.ceshi').remove();
+            }
+            var ceshi=document.getElementsByClassName('ceshi')[0];
+            var ul=document.getElementsByClassName('ul1')[0];
+            // console.log(ceshi
+            // ,ul)
+            // replace(ceshi,ul)
         })
     </script>
 </body>
