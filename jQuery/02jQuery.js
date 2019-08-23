@@ -34,6 +34,21 @@
 
         /**
          * 四.jQueryDOM操作方法
+         * appenTo
+         * 1.如果指定元素有多个，会将元素拷贝多份添加到指定元素中
+         * 2.给apendTo方法传递字符串，会根据字符串找到所有对应元素后再添加
+         * 3.给appendTo方法传递jQuery对象，会将元素添加到jQuery对象保存的所有指定元素中
+         * 4.给appendTo方法传递DOM元素，会将元素添加到所有指定DOM元素中
+         */
+        /**
+         * DOM操作:
+         * 8.指定元素.prepend.元素==>将元素添加到指定元素内部的最前面
+         * 9.元素.insertAfter.指定元素==>将元素添加到指定外部的后面
+         * 10.指定元素.after.元素==>将元素添加到指定元素外部的后面
+         * 11.元素.insertBefore.指定元素==>将元素添加到指定元素外部的前面
+         * 12.指定元素.before.元素==>将元素添加到指定元素外部的前面
+         * 13.元素.replaceAll.指定元素==>替换所有指定元素
+         * 14.clone==>复制节点,(true深复制,false浅拷贝)
          */
         (function (global, factory) {
             if (typeof module === "object" && typeof module.export === "object") {
@@ -57,33 +72,33 @@
                 _jQuery = window.jQuery,
                 _$ = window.$,
                 document = window.document,
-                noGlobal=!window;
+                noGlobal = !window;
             var arr = [],
                 slice = arr.slice,
                 concat = arr.concat,
                 push = arr.push,
                 indexOf = arr.indexOf;
-            var classtype={},
-                toString=classtype.toString,
-                has=classtype.hasOwnProperty,
-                support={};
+            var classtype = {},
+                toString = classtype.toString,
+                has = classtype.hasOwnProperty,
+                support = {};
 
-            jQuery.prototype=jQuery.fn = {
+            jQuery.prototype = jQuery.fn = {
                 constructor: jQuery,
                 init: function (selector) {
                     selector = jQuery.trim(selector)
-                    //1.传入'' null undefined NaN 0 false
+                    //*1.传入'' null undefined NaN 0 false*/
                     if (!selector) {
 
-                    } //处理方法
+                    } //*处理方法*/
                     else if (jQuery.isFunction(selector)) {
                         jQuery.ready(selector)
                     }
-                    //2.字符串
+                    //*2.字符串*/
                     else if (jQuery.isString(selector)) {
-                        //2.1 判断是否是代码片段 <a>
+                        //*2.1 判断是否是代码片段 <a>*/
                         if (jQuery.isHTML(selector)) {
-                            //2.1.1根据代码片段创建所有的元素
+                            //*2.1.1根据代码片段创建所有的元素*/
                             var elem = document.createElement('div');
                             elem.innerHTML = selector;
                             /**->简化 [].push.apply(this,elem.children) 为什么可以替换 前往./applay和call方法.html查看详细
@@ -95,9 +110,9 @@
                             this.length = elem.children.length;
                             */
                             [].push.apply(this, elem.children)
-                            //2.1.4返回加工好的this(jQuery)
+                            //*2.1.4返回加工好的this(jQuery)*/
                         }
-                        //2.2 判断是否是选择器 选择器需要改进
+                        //*2.2 判断是否是选择器 选择器需要改进*/
                         else {
                             /** 
                             //2.2.1根据传入的选择器找到对应的元素
@@ -107,10 +122,13 @@
                             //2.2.3返回加工上的this
                             //现在没有对length==1处理，只返回了伪数组
                             */
-                            //封装dom
+                            //*封装dom*/
                             jQuery.sizzle.call(this, selector)
+                            this.prevObject = this;
+                            this.content = document;
+                            this.selector = selector;
                         }
-                    } //3.数组
+                    } //*3.数组*/
                     else if (jQuery.isArray(selector)) {
                         /**
                          * 优化
@@ -126,27 +144,28 @@
                         var arr = [].slice.call(selector);
                         //将真数组转换为伪数组
                         [].push.apply(this, arr);
-                    } //4.以上类型除外
+                        this.prevObject = this;
+                        this.content = document;
+                        this.selector = selector;
+                    } //*4.以上类型除外*/
                     else {
                         this[0] = selector;
+                        this.content = selector;
                         this.length = 1;
                     }
-                    this.selector=selector;
-                    this.content=document;
-                    this.prevObject=this;
                     return this;
                 },
-                jQuery: vision, //版本号
-                selector: "", //默认选择器
-                length: 0, //默认长度
-                push:push, //[].push找到数组的push方法，相当于[].push.apply(this)
+                jQuery: vision, //*版本号*/
+                selector: "", //*默认选择器*/
+                length: 0, //*默认长度*/
+                push: push, //*[].push找到数组的push方法，相当于[].push.apply(this)*/
                 sort: arr.sort,
                 splice: arr.splice,
-                toArray: function () { //伪转换为真数组
+                toArray: function () { //*伪转换为真数组*/
                     return [].slice.call(this);
                 },
                 get: function (num) {
-                    // 没有传参数
+                    //* 没有传参数*/
                     if (arguments.length === 0) {
                         return this.toArray();
                     } else if (num >= 0) {
@@ -172,8 +191,8 @@
                     return jQuery.each(this, fn);
                 }
             }
-            jQuery.prototype.init.prototype = jQuery.prototype=jQuery.fn;
-            jQuery.extend =jQuery.fn.extend= function (obj) {
+            jQuery.prototype.init.prototype = jQuery.prototype = jQuery.fn;
+            jQuery.extend = jQuery.fn.extend = function (obj) {
                 for (var key in obj) {
                     this[key] = obj[key];
                 }
@@ -188,11 +207,11 @@
                         str.length >= 3
                 },
                 trim: function (str) {
-                    //如果不是字符串就不去除两端空格
+                    //*如果不是字符串就不去除两端空格*/
                     if (!jQuery.isString(str)) {
                         return str;
                     }
-                    //判断当前浏览器是否支持trim方法
+                    //*判断当前浏览器是否支持trim方法*/
                     if (str.trim) {
                         return str.trim();
                     } else {
@@ -217,7 +236,7 @@
                     return typeof fn === 'function'
                 },
                 ready: function (fn) {
-                    //判断DOM是否加载完毕,加载完毕执行这个回调函数
+                    //*判断DOM是否加载完毕,加载完毕执行这个回调函数*/
                     if (document.readyState == "complete") {
                         fn();
                     } else if (document.addEventListener) {
@@ -234,7 +253,7 @@
                 },
                 each: function (obj, fn) {
 
-                    //1.判断是否是数组
+                    //*1.判断是否是数组*/
                     if (jQuery.isArray(obj)) {
                         for (var i = 0; i < obj.length; i++) {
                             var result = fn.call(obj[i], obj[i], i, obj);
@@ -252,7 +271,7 @@
                            * jQuery中 */
                         }
                     }
-                    //2.判断是否是对象
+                    //*2.判断是否是对象*/
                     else if (jQuery.isObject(obj)) {
                         for (var key in obj) {
                             var result = fn.call(key, obj[key], key, obj);
@@ -266,7 +285,7 @@
                 },
                 map: function (obj, fn) {
                     var arr = [];
-                    //1.判断是否是数组
+                    //*1.判断是否是数组*/
                     if (jQuery.isArray(obj)) {
                         for (var i = 0; i < obj.length; i++) {
                             var temp = fn(obj[i], i, obj);
@@ -275,7 +294,7 @@
                             }
                         }
                     }
-                    //2.判断是否是对象
+                    //*2.判断是否是对象*/
                     else if (jQuery.isObject(obj)) {
                         for (var key in obj) {
                             var temp = fn(obj[key], key, obj);
@@ -289,7 +308,7 @@
             });
             jQuery.fn.extend({
                 empty: function () {
-                    //便利找到所有的元素
+                    //*便利找到所有的元素*/
                     this.each(function (value, index) {
                         value.innerHTML = "";
                     })
@@ -297,28 +316,28 @@
                 },
                 remove: function (sele) {
                     if (arguments.length === 0 || arguments[0] === "") {
-                        //便利找到所有的元素
+                        //*便利找到所有的元素*/
                         this.each(function (value, index) {
-                            //根据便利到的元素找到对应的父元素
+                            //*根据便利到的元素找到对应的父元素*/
                             var parent = value.parentNode;
-                            //通过父元素删除指定的元素
+                            //*通过父元素删除指定的元素*/
                             parent.removeChild(value)
                         })
                     } else {
                         var $this = this;
-                        //1.根据传入的选择器找到指定的元素
+                        //*1.根据传入的选择器找到指定的元素*/
                         var selector = jQuery.isSelect(sele);
-                        //未改完 判断 是选择器还是标签
-                        //2.遍历找到的元素，获取的对应的类型
+                        //*未改完 判断 是选择器还是标签*/
+                        //*2.遍历找到的元素，获取的对应的类型*/
                         $(sele).each(function (value, index) {
                             var type = value.tagName;
                             var isName = value.getAttribute(selector);
-                            //3.遍历指定元素
+                            //*3.遍历指定元素*/
                             $this.each(function (value, index) {
-                                //4.获取指定元素的类型
+                                //*4.获取指定元素的类型*/
                                 var t = value.tagName;
                                 if (selector != "ID" && selector != "CLASS") {
-                                    //5.判断找到元素的类型和指定元素的类型
+                                    //*5.判断找到元素的类型和指定元素的类型*/
                                     if (t === type) {
                                         var parent = value.parentElement;
                                         parent.removeChild(value);
@@ -326,7 +345,7 @@
                                     }
 
                                 } else {
-                                    //5.判断找到元素的类型和指定元素的类型
+                                    //*5.判断找到元素的类型和指定元素的类型*/
                                     if (t === type && isName === value.getAttribute(selector)) {
                                         var parent = value.parentElement;
                                         parent.removeChild(value);
@@ -338,44 +357,186 @@
                     }
                     return this;
                 },
-                html:function(content){
-                    if(arguments.length===0){
-                    return this[0].innerHTML;
-                    }else{
-                        this.each(function(val,index){
-                             val.innerHTML=content;
+                html: function (content) {
+                    if (arguments.length === 0) {
+                        return this[0].innerHTML;
+                    } else {
+                        this.each(function (val, index) {
+                            val.innerHTML = content;
                         });
                     }
                     return this;
                 },
-                text:function(content){
-                    if(arguments.length===0){
-                        var result="";
-                        this.each(function(value,index){
-                            result+=value.innerText;
+                text: function (content) {
+                    if (arguments.length === 0) {
+                        var result = "";
+                        this.each(function (value, index) {
+                            result += value.innerText;
                         })
                         return result;
-                    }else{
-                        this.each(function(value,key){
+                    } else {
+                        this.each(function (value, key) {
                             console.log();
-                            jQuery.fn.selector=value.innerText=content;
+                            jQuery.fn.selector = value.innerText = content;
                         })
                         console.log(this.selector)
                     }
                     return this;
+                }, /**使用document.getElementsByClassName('')选择器传入数组会出现重复刷新数组数量造成无限循环的现象*/
+                appendTo:function(sele) {
+                    /**
+                    for (var i = 0; i < $target.length; i++) {
+                        //1.遍历取出所有指定的元素;
+                        var targetElem=$target[i];
+                        var Tips = false, //提示
+                            warning = false, //警告
+                            Danger = false; //危险
+                        //2.判断当前是否是第0个指定元素
+                        for (var j = 0; j < this.length; j++) {
+                            var sourceElem = this[j];
+                            if (i === 0) {
+                                targetElem.appendChild(sourceElem)
+                                //直接添加
+                            } else {
+                                //先拷贝再添加
+                                var elem = sourceElem.cloneNode(true);
+                                targetElem.appendChild(elem)
+                                if (i > 100 || j > 100) {
+                                    if (!Tips && confirm('检测到重复执行超过100次可能即将进入无限循环!!是否强制停止')) {
+                                        break;
+                                    } else {
+                                        Tips = true;
+                                    };
+                                }
+                                if (!warning && (i > 1000 || j > 1000)) {
+                                    if (confirm('检测到重复执行超过1000次可能即将进入无限循环!!是否强制停止')) {
+                                        break;
+                                    } else {
+                                        warning = true;
+                                    };
+                                }
+                                if (!Danger && (i > 10000 || j > 10000)) {
+                                    if (confirm('检测到重复执行超过10000次可能即将进入无限循环!!是否强制停止')) {
+                                        break;
+                                    };
+                                } else {
+                                    Danger = true;}
+                            }
+                        }
+                    }*/
+                    /** 把传入的参数统一转为jQuery对象*/
+                    var $target = $(sele);
+                    var $this = this;
+                    var result = [];
+                    /*1.遍历取出所有指定的元素;*/
+                    $.each($target, function (value, index) {
+                        var targetElem = value;
+                        $this.each(function (value) {
+                            /*2.判断当前是否是第0个指定元素*/
+                            if (index === 0) {
+                                targetElem.appendChild(value)
+                                result.push(value);
+                                /*直接添加*/
+                            } else {
+                                /*先拷贝再添加*/
+                                var elem = value.cloneNode(true);
+                                targetElem.appendChild(elem);
+                                result.push(elem)
+                            }
+                        })
+                    });
+                    return $(result)
                 },
-                appendTo(){
+                prependTo:function(sele){
+                    var $target = $(sele);
+                    var $this = this;
+                    var result = [];
+                    /*1.遍历取出所有指定的元素;*/
+                    $.each($target, function (val, index) {
+                        var targetElem = val;
+                        $this.each(function (value) {
+                            /*2.判断当前是否是第0个指定元素*/
+                            if (index === 0) {
+                                targetElem.insertBefore(value,val.firstChild)
+                                result.push(value);
+                                /*直接添加*/
+                            } else {
+                                /*先拷贝再添加*/
+                                var elem = value.cloneNode(true);
+                                targetElem.insertBefore(elem,val.firstChild);
+                                result.push(elem)
+                            }
+                        })
+                    });
+                    return $(result)
+                },
+                append: function(sele) {
+                    //*判断传入的参数是否是字符串*/
+                    if (jQuery.isString(sele)) {
+                        this.each(function (val) {
+                            val.innerHTML += sele;
+                        });
+                    } else {//*在什么什么标签后添加内容*/
+                        if(sele instanceof jQuery){
+                            sele.appendTo(this)
+                        }else{
+                            $(sele).appendTo(this)
+                        }
+                    }
+                    return this;
+                },
+                prepend:function(sele){
+                    // 指定元素.prepend.元素==>将元素添加到指定元素内部的最前面
+                    if(jQuery.isString(sele)){
+                        this.each(function(val){
+                            val.innerHTML=sele+val.innerHTML;
+                        });
+                    }else{
+                        if(sele instanceof jQuery){
+                            sele.prependTo(this)
+                        }else{
+                            $(sele).prependTo(this)
+                        }
+                    }
+                    return this;
+                },
+                insertAfter:function(){
 
+                },/**insertBefore调用者是谁，就会把元素插入到调用者的前面 */
+                insertBefore:function(sele){
+                    var $target = $(sele);
+                    var $this = this;
+                    var result = [];
+                    /*1.遍历取出所有指定的元素;*/
+                    $.each($target, function (val, index) {
+                        var parent=val.parentNode;
+                        console.log(parent)
+                        $this.each(function (value) {
+                            /*2.判断当前是否是第0个指定元素*/
+                            if (index === 0) {
+                                //在val== 元素 前面 插入value == 被插入元素
+                                parent.insertBefore(value,val)
+                                result.push(value);
+                                /*直接添加*/
+                            } else {
+                                /*先拷贝再添加*/
+                                var elem = value.cloneNode(true);
+                                parent.insertBefore(elem,val);
+                                result.push(elem)
+                            }
+                        })
+                    });
+                    return $(result)
                 }
             });
             jQuery.extend({
-                //判断什么类型选择器
+                //*判断什么类型选择器*/
                 isSelect(selector) {
                     if (selector.charAt(0) === "#") {
-                        // console.log('id选择器')
+                        //* console.log('id选择器')*/
                         return 'ID'
                     } else if (selector.charAt(0) === '.') {
-                        // console.log('class选择器')
+                        //* console.log('class选择器')*/
                         return 'CLASS'
                     } else {
                         return selector;
@@ -386,7 +547,7 @@
                     [].push.apply(this, elem)
                 }
             });
-            if(!noGlobal){
+            if (!noGlobal) {
                 window.jQuery = window.$ = jQuery;
             }
             return jQuery

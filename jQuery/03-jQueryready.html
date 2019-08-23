@@ -1,22 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+
 <body>
-   <div class="box">
+    <p class='ceshi'>测试p</p>
+    <p class='ceshi'>测试p2</p>
+    <div class="box">
         <p class="box1">p>box1</p>
         <div class="box2">div>box2</div>
         <div class="box1">div>box1</div>
         <p class="box2">p>box2</p>
-   </div>
+    </div>
+    <ul class="ul1">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+    <ul class="ul1">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
     <script src="./02jQuery.js"></script>
-    <!-- <script src="./jquery.js"></script> -->
+ <!-- <script src="./jquery.js"></script> -->
     <script>
-        $(function(){
+        'use strict'
+        $(function () {
             // var res=$("div");
 
             // console.log(res)
@@ -28,15 +43,70 @@
             // console.log($(arr).each(value=>{
             //     console.log(value)
             //     return true
-            //     return value!==false?value:false
             // }));
+            //     return value!==false?value:false
             // $('div').empty();
             // console.log($($(".box")[0].children).remove('.box1'));
             // $(ars).empty()
             // console.log(_$);
             // console.log(arr=$($('.box')[0].children).each(i=>$(i).toArray()))
-            console.log($('.box1').text('<div>22222222</div>'));
+            // console.log($('.box1').text('<div>22222222</div>'));
+            /*
+            function appendTo(source, target) {
+                // var ishtml={}.toString
+                // console.log(target,typeof target,ishtml.call(target))
+                // console.log(ishtml.call(source)==="[object HTMLCollection]" &&source.length||1);
+                // var isI=ishtml.call(source)==="[object HTMLCollection]" &&source.length||1;
+                for (var i = 0; i < target.length; i++) {
+                    //1.遍历取出所有指定的元素;
+                    var targetElem = target[i];
+                    var Tips = false, //提示
+                        warning = false, //警告
+                        Danger = false; //危险
+                    //2.判断当前是否是第0个指定元素
+                    for (var j = 0; j < source.length; j++) {
+                        var sourceElem = source[j];
+                        if (i === 0) {
+                            targetElem.appendChild(sourceElem)
+                            //直接添加
+                        } else {
+                            //先拷贝再添加
+                            var elem = sourceElem.cloneNode(true);
+                            targetElem.appendChild(elem)
+                            if (i > 100 || j > 100) {
+                                if (!Tips && confirm('检测到重复执行超过100次可能即将进入无限循环!!是否强制停止')) {
+                                    break;
+                                } else {
+                                    Tips = true;
+                                };
+                            }
+                            if (!warning && (i > 1000 || j > 1000)) {
+                                if (confirm('检测到重复执行超过1000次可能即将进入无限循环!!是否强制停止')) {
+                                    break;
+                                } else {
+                                    warning = true;
+                                };
+                            }
+                            if (!Danger && (i > 10000 || j > 10000)) {
+                                if (confirm('检测到重复执行超过10000次可能即将进入无限循环!!是否强制停止')) {
+                                    break;
+                                };
+                            } else {
+                                Danger = true;}
+                        }
+                    }
+                }
+            }*/
+            // appendTo($('.ceshi'), document.getElementsByClassName('ul1'))
+            // console.log($('.box').appendTo('.ul1'));
+            // console.log($("a1"));
+            // console.log($('<div>11111111111</div>'))
+            // console.log($(".ul1").first().append($('div')));
+            // console.log($(".ul1").prepend($('div')));
+            console.log($('.ul1').insertBefore('.box1'))
+            // console.log($('aaa134134134'))
         })
     </script>
 </body>
+
 </html>
