@@ -555,7 +555,6 @@
                 replaceAll(sele){
                     var $target=$(sele);
                     var $this=this;
-                console.log($target)
                     var result=[];
                     $.each($target,function(value,index){
                         var parent=value.parentNode;
