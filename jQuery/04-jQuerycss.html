@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div width="100">
+        <ul>
+            <li>
+                <div>
+22222222
+                </div>
+                <div>
+                    11111
+                </div>
+            </li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div>
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="div5">
+11111111111111111111
+    </div>
+    <p></p>
+    <h2></h2>
+    <div>2445425</div>
+    <div>24524</div>
+    <script src="./02jQuery.js"></script>
+    <!-- <script src="./jquery.js"></script> -->
+    <script>
+        $(function(){
+        // console.log($("div").attr("color","red"));测试attr 类似原声 get/setAttribute
+        // console.log($('div'),$);
+        //next
+        // console.log(document.querySelectorAll('div')[0].nextElementSibling);
+        // console.log(document.querySelectorAll('div')[1].previousSibling);
+        // console.time('$')
+        // console.log($('div').next('p'))
+        // console.timeEnd('$')
+        // console.log($("div"));
+
+        //之后的所有兄弟
+        function nextAll(source,target){
+            source=document.querySelectorAll(source)[0];
+            var parent=source.parentNode;
+            console.log(source,parent.querySelector('.div5').nextElementSibling);
+        }
+        nextAll('.div5')
+        /*jQuery中
+        dir: function( elem, dir, until ) {
+		var matched = [],
+			cur = elem[ dir ];
+
+		while ( cur && cur.nodeType !== 9 && (until === undefined || cur.nodeType !== 1 || !jQuery( cur ).is( until )) ) {
+			if ( cur.nodeType === 1 ) {
+				matched.push( cur );
+			}
+			cur = cur[dir];
+		}
+		return matched;
+	},
+        */
+    })
+            // var arr=[1,2,3,4,5];
+            // console.log()
+            // var obj=[].slice.call(mybutton);
+            // console.log(obj)
+            // Object.keys(mybutton).forEach(element=>{
+            //     return mybutton[element]=false;
+            // })
+            // console.log(mybutton)
+    </script>
+</body>
+</html>

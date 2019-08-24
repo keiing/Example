@@ -7,8 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
-
 <body>
+    <button>按钮</button>
     <p class='ceshi'>测试p11</p>
     <p class='ceshi'>测试p2111</p>
     <div class="box">
@@ -22,11 +22,14 @@
         <li>2</li>
         <li>3</li>
     </ul>
-    <!-- <ul class="ul1">
+    <ul class="ul1">
         <li>1</li>
         <li>2</li>
         <li>3</li>
-    </ul> -->
+    </ul>
+    <hr>
+    <h2 class="h2ceshi">测试内容11</h2>
+    <h2 class="h2ceshi">测试内容22</h2>
     <script src="./02jQuery.js"></script>
  <!-- <script src="./jquery.js"></script> -->
     <script>
@@ -103,15 +106,27 @@
             // console.log($('<div>11111111111</div>'))
             // console.log($(".ul1").first().append($('div')));
             // console.log($(".ul1").prepend($('div')));
-            // console.log($('.ul1').after('p'));//将ul标签插入到p标签之后
+            // console.log($('h2').after('p'));//将ul标签插入到p标签之后
+            // console.log($('h2').insertAfter('p'));//将ul标签插入到p标签之后
             // console.log($('.ul1').insertBefore('p'));//将ul标签插入到p标签之前
+            console.log($('h2').before('p'));//将p标签插入到h2标签之前
             // var a=document.getElementsByClassName('box');
             // var ul=document.getElementsByClassName('ul1');
             // console.log(a[0].children[2].after(ul[0]),ul[0])
             // console.log(a[0].insertBefore(ul[0],a[0].children[2]),ul[0])
             
             // console.log($('aaa134134134'))
-            $('.ul1').replaceAll('.ceshi');//替换元素；
+            $('button')[0].addEventListener('click',function(){
+                var len;
+                console.log(len=$('div').replaceAll('.h2ceshi'));//替换元素；
+                len.each(function(val){
+                    console.log(val.style.color=`rgb(${random()},${random()},${random()})`)
+                    $(val).html('11111111')
+                });
+                function random(){
+                    return Math.floor(Math.random()*256)
+                }
+            })
             // $('div').insertBefore('p')
             function replace(source,target){
                 console.log(source,target);

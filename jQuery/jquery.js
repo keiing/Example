@@ -5652,12 +5652,22 @@ jQuery.extend({
 		}
 		return matched;
 	},
-
+	// nth
+	/** 
+	 * next: function( elem ) {
+		return jQuery.nth( elem, 2, "nextSibling" );
+	},
+	prev: function( elem ) {
+		return jQuery.nth( elem, 2, "previousSibling" );
+	},
+	*/
 	nth: function( cur, result, dir, elem ) {
-		result = result || 1;
-		var num = 0;
-
+		result = result || 1;//2
+		console.log(result)
+		var num = 0;//0
+//dir for(;cur是否满足条件;cur=cur[nextSibling])
 		for ( ; cur; cur = cur[dir] ) {
+			// console.log(cur,cur.nodeType)
 			if ( cur.nodeType === 1 && ++num === result ) {
 				break;
 			}
