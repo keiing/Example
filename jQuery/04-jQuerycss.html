@@ -55,7 +55,9 @@
             var parent=source.parentNode;
             console.log(source,parent.querySelector('.div5').nextElementSibling);
         }
-        nextAll('.div5')
+        nextAll('.div5');
+        $(".div5").insertAfter('li')
+        // console.log($(".div5").before('li'))
         /*jQuery中
         dir: function( elem, dir, until ) {
 		var matched = [],

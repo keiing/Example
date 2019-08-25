@@ -513,18 +513,18 @@
                     var $this = this;
                     var result = [];
                     /*1.遍历取出所有指定的元素;*/
-                    $.each($target, function (val, index) {
-                        var targetElem = val;
-                        $this.each(function (value) {
+                    $.each($target, function (value, index) {
+                        var targetElem = value;
+                        $this.each(function (val) {
                             /*2.判断当前是否是第0个指定元素*/
                             if (index === 0) {
-                                targetElem.insertBefore(value, val.firstChild)
-                                result.push(value);
+                                targetElem.insertBefore(val, value.firstChild)
+                                result.push(val);
                                 /*直接添加*/
                             } else {
                                 /*先拷贝再添加*/
-                                var elem = value.cloneNode(true);
-                                targetElem.insertBefore(elem, val.firstChild);
+                                var elem = val.cloneNode(true);
+                                targetElem.insertBefore(elem, value.firstChild);
                                 result.push(elem)
                             }
                         })
@@ -561,7 +561,7 @@
                     }
                     return this;
                 },
-                /**元素.after(指定元素) 将元素添加到指定元素的后面 */
+                /**元素.insertAfter(指定元素)调用者是谁，就会把元素插入到调用者后面 */
                 insertAfter: function (sele) {
                     var $target = $(sele);
                     var $this = this;
@@ -582,6 +582,8 @@
                 },
                 /**指定元素.after(元素) 将元素添加到指定元素的后面 */
                 after: function (sele) {
+                   return jQuery.abter.call(this,'after',sele)
+                    /**
                     var $target = $(sele);
                     var $this = this;
                     var result = [];
@@ -598,6 +600,7 @@
                         })
                     })
                     return result;
+                     */
                 },
                 /**元素.insertBefore(指定元素)调用者是谁，就会把元素插入到调用者的前面 将指定元素添加到元素的前面 */
                 insertBefore: function (sele) {
@@ -626,6 +629,8 @@
                 },
                 /**指定元素.before(元素) 将元素添加到指定元素的前面 */
                 before: function (sele) {
+                    return jQuery.abter.call(this,'before',sele);
+                    /** 
                     var $target = $(sele),
                         $this = this;
                     var result = [];
@@ -642,6 +647,7 @@
                         })
                     });
                     return $(result)
+                    */
                 },
                 /**repaceAll替换内容.被替换内容*/
                 replaceAll(sele) {
@@ -655,7 +661,7 @@
                             if (key === 0) {
                                 var temp = val.cloneNode(true);
                                 parent.insertBefore(temp, value)
-                                if ($this.length - 1 == key) {
+                                if ($this.length - 1 === key) {
                                     $(value).remove();
                                 } else if (key === $target.length) {
                                     $(value).remove();
@@ -664,7 +670,7 @@
                             } else {
                                 var temp = val.cloneNode(true);
                                 parent.insertBefore(temp, value)
-                                if ($this.length - 1 == key) {
+                                if ($this.length - 1 === key) {
                                     $(value).remove();
                                 } else if (key === $target.length - 1) {
                                     $(value).remove();
@@ -761,6 +767,22 @@
                             }
                         })
                     return $(result);
+                },/**before after */
+                abter:function(typeName,selector){
+                    var $target = $(selector),$this = this,result = [];
+                    $.each($target, function (value, index) {
+                        $this.each(function (val, index) {
+                            if (index === 0) {
+                                val[typeName](value)
+                                result.push(value);
+                            } else {
+                                var elem = value.cloneNode(true);
+                                val[typeName](elem);
+                                result.push(elem);
+                            }
+                        })
+                    })
+                    return result;
                 }
             });
             jQuery.fn.extend({
