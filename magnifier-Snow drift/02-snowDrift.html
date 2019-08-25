@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            font-family: "微软雅黑"
+        }
+        body{
+            background-color:#000;
+        }
+        /* div{
+            
+        } */
+        /* @keyframes mymove{
+        from {top:0px;}
+        to {top:200px;}
+        } */
+    /* 公用样式---^ */
+    </style>
+</head>
+<body>
+    <script src="../jQuery/jquery.js"></script>
+   <script>   
+       document.addEventListener('DOMContentLoaded',function(){
+           (function(configAll){
+           var {minSize,maxSize,newOn}=configAll||{minSize:5,maxSize:50,newOn:50};//雪花最小/最大尺寸
+           //newOn单位是毫秒--控制雪的大小
+           var flackColor="#fff";//雪花颜色
+           var flack=document.createElement('div');//每一个雪花就是一个div
+           flack.setAttribute('style','position:absolute;top:-50px;');
+           flack.innerHTML="❆"
+            var documentHeigth=window.innerHeight-100,
+            documentWidth=window.innerWidth-50;//浏览器高度/宽度
+            console.log(documentWidth,documentHeigth)
+            setInterval(function(){
+                var startPositionLeft=Math.random()*documentWidth;
+                var startOpcity=Math.random()*0.3+0.7;//透明度
+                var endPostionTop=documentHeigth;
+                var endPostionLeft=Math.random()*documentWidth;
+                // var startPositionTop=Math.random()*documentHeigth;
+                var durationFall=2000+Math.random()*3000;//下降速度
+                var sizeFlack=minSize+Math.random()*maxSize;
+                var flacks=flack.cloneNode(true);
+                // flacks.style.color=flackColor;
+                // flacks.style.fontSize=sizeFlack
+                // flacks.style.opacity=startOpcity;
+                // flack.style.top=-endPostionTop;
+                $(flacks).css({"left":startPositionLeft,
+                'color':flackColor,"fontSize":sizeFlack,
+                "opacity":startOpcity})
+                .animate({
+                    "top":endPostionTop,
+                    "left":endPostionLeft,
+                    "opacity":0.5
+                },durationFall,function(){
+                $(this).remove();
+            });
+                document.body.appendChild(flacks)
+            },newOn)
+        }())
+   })
+   </script> 
+</body>
+</html>
