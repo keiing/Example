@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #box {
+            position: relative;
+        }
+
+        .small_pic {
+            width: 300px;
+            height: 300px;
+        }
+
+        .small_pic img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .small_pic .slider {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: rgba(244, 11, 255, .5);
+            /* cursor:move 鼠标悬浮呈移动光标 */
+            cursor: move;
+        }
+
+        .big_pic {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border: 5px solid #333;
+            /* 移动位置 */
+            top: 0;
+            left: 300px;
+            overflow: hidden;
+            box-sizing: border-box;
+            /* display: none; */
+        }
+        .big_pic img{
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='box'>
+        <!-- 左侧 -->
+        <div class="small_pic">
+            <!-- 滑块 -->
+            <span class="slider"></span>
+            <!-- 图片 -->
+            <img src="http://127.0.0.1:3000/wechat/my/cc.png">
+        </div>
+        <!-- 右侧 -->
+        <div class="big_pic">
+            <!-- 图片 -->
+            <img class="big_img" src="http://127.0.0.1:3000/wechat/my/cc.png" width="1200" height='1200'>
+        </div>
+    </div>
+    <script src="../jQuery/02jQuery.js"></script>
+    <script>
+        $(function () {
+            (function(){
+            var small_pic = $('.small_pic')[0];
+            var slider = $('.slider')[0];
+            var big_img = $('.big_pic')[0];
+            var big_imgChildren=big_img.children[0];
+            var magnifier=function (event) {
+                var e = event || window.event;
+                // 滑块
+                //大图片 根据滑块比例算出大图片应该定位距离
+                onkeydown=function(event){
+                // console.log(event.keyCode)
+                    console.log('触发')
+                    small_pic.onmousemove=null
+                 }
+                onkeyup=function(event){
+                    small_pic.onmousemove=magnifier
+                }
+                fnSliderLg(fnSlider(e));
+                // if(){}
+            }
+            small_pic.onmousemove = magnifier;
+            // 滑块
+            function fnSlider(e) {
+                big_img.style.display = "block"
+                if ((sliderX = e.clientX - 50) > 0 &&
+                //200可以写成 slider.offsetWidth/2
+                    sliderX < 200) { //sliderX<??? 直接简写的 获取 sliderX<图片的宽度-span的宽度
+                    slider.style.left = sliderX + 'px';
+                }
+                if ((sliderY = e.clientY - 50) > 0 &&
+                // slider.offsetHeight/2
+                    sliderY < 200) { //sliderY<??? 直接简写的 获取 sliderY<图片的高度-span的高度
+                    slider.style.top = sliderY + 'px';
+                }
+                return {sliderX,sliderY}
+            }
+            //大图片
+            function fnSliderLg(e){
+                var {sliderX,sliderY}=e;
+                big_imgChildren.style.top=-(sliderY*4)+'px';//小图片高度/大图片高度 ====a/b
+                big_imgChildren.style.left=-(sliderX*4)+'px';//小图片宽度/大图片宽度 ====a/b
+            }
+
+            small_pic.onmouseleave = function (event) {
+                big_img.style = ""; //鼠标移出清除style属性
+            }
+            }());
+        })
+    </script>
+</body>
+
+</html>
