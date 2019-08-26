@@ -914,9 +914,33 @@
                     return this;
                     */
                 },/** */
-                css:function(){}
+                css:function(attr,value){
+                     /**1.判断是否是字符串 */
+                    if (jQuery.isString(attr)) {
+                        /*判断是一个字符串还是两个字符串*/
+                        if (arguments.length === 1) {
+                            return jQuery.getStyle(this[0],attr)
+                        } else {
+                            this.each(function (val, key) {
+                                val.style[attr]=value;
+                            })
+                        }
+                    }
+                    /*2.判断是否是对象*/
+                    else if (jQuery.isObject(attr)) {
+                        var $this = this;
+                        /*便利取出所有属性节点的名称和对应的值*/
+                        $.each(attr, function (valKey, name) {
+                           /*遍历取出所有的元素*/
+                            $this.each(function (value, index) {
+                                value.style[name] = valKey;
+                            })
+                        })
+                    }
+                    return this;
+                }
             });
-            /**DOM */
+            /**DOM*/
             jQuery.extend({
                 /**attr prop */
                 access: function (type,attr,value,isArgumentsLength) {
