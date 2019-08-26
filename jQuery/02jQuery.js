@@ -84,8 +84,8 @@
 
         }(typeof window !== "undefined" ? window : this, function (window, undefined) {
             var vision = "1.0.2",
-                jQuery = function (selector) {
-                    return new jQuery.fn.init(selector);
+                jQuery = function (selector, context) {
+                    return new jQuery.fn.init(selector, context);
                 },
                 _jQuery = window.jQuery,
                 _$ = window.$,
@@ -102,15 +102,31 @@
                 support = {};
             jQuery.prototype = jQuery.fn = {
                 constructor: jQuery,
-                init: function (selector) {
+                init: function (selector, context) {
                     selector = jQuery.trim(selector)
+                    if (selector.nodeType) {
+                        this.context = this[0] = selector;
+                        this.length = 1;
+                        return this;
+                    }
+                    //body
+                    if (selector === "body" && !context && document.body) {
+                        this.context = document;
+                        this[0] = document.body;
+                        this.selector = selector;
+                        this.length = 1;
+                        return this;
+                    }
                     //*1.传入'' null undefined NaN 0 false*/
                     if (!selector) {
 
                     } //*处理方法*/
                     else if (jQuery.isFunction(selector)) {
-                        jQuery.ready(selector)
+                        this[0] = this.content = document;
+                        this.length = 1;
+                        return jQuery.ready(selector)
                     }
+                    //document
                     //*2.字符串*/
                     else if (jQuery.isString(selector)) {
                         //*2.1 判断是否是代码片段 <a>*/
@@ -131,7 +147,7 @@
                         }
                         //*2.2 判断是否是选择器 选择器需要改进*/
                         else {
-                            /** 
+                            /**
                             //2.2.1根据传入的选择器找到对应的元素
                             var elem = document.querySelectorAll(selector);
                             //2.2.2将找到的元素添加到jQuery上
@@ -180,11 +196,11 @@
                         } */
                     } //*4.以上类型除外*/
                     else {
-                        this[0] = selector;
                         this.content = document;
                         this.selector = selector;
                         this.length = 1;
                     }
+
                     return this;
                 },
                 jQuery: vision, //*版本号*/
@@ -366,6 +382,13 @@
                         }
                     }
                     return arr;
+                },
+                getStyle:function(dom,styleName){
+                    if(window.getComputedStyle){
+                        return window.getComputedStyle(dom)[styleName];
+                    }else{
+                        return window.currentStyle(dom)[styleName];
+                    }
                 }
             });
             jQuery.fn.extend({
@@ -582,7 +605,7 @@
                 },
                 /**指定元素.after(元素) 将元素添加到指定元素的后面 */
                 after: function (sele) {
-                   return jQuery.abter.call(this,'after',sele)
+                    return jQuery.abter.call(this, 'after', sele)
                     /**
                     var $target = $(sele);
                     var $this = this;
@@ -629,7 +652,7 @@
                 },
                 /**指定元素.before(元素) 将元素添加到指定元素的前面 */
                 before: function (sele) {
-                    return jQuery.abter.call(this,'before',sele);
+                    return jQuery.abter.call(this, 'before', sele);
                     /** 
                     var $target = $(sele),
                         $this = this;
@@ -685,8 +708,9 @@
             jQuery.fn.extend({
                 /**下一个选择器 */
                 next: function (selector) {
-                    return jQuery.nth.call(this,"nextElementSibling",1,selector);
-                     /**
+                    return jQuery.nth.call(this, "nextSibling", 2, selector);
+                    /** return jQuery.nth.call(this, "nextElementSibling", 1, selector);*/
+                    /**
                     var $this = this,
                         result = [];
                         $this.each(function (value, index) {
@@ -705,8 +729,9 @@
                 },
                 /**上一个选择器 */
                 prev: function (selector) {
-                    return jQuery.nth.call(this,"previousElementSibling",1,selector);
-                        /**selector.previousSibling;//下一个文本节点 */
+                    return jQuery.nth.call(this, "previousSibling", 2, selector);
+                    /**return jQuery.nth.call(this, "previousElementSibling", 1, selector);*/
+                    /**selector.previousSibling;//下一个文本节点 */
                     /**
                     var $this = this,
                         result = [];
@@ -724,11 +749,15 @@
                         })
                     return $(result); 
                     */
-                },/**之后的所有兄弟 */
-                nextAll:function(){
-
-                },/**之前的所有兄弟 */
-                prevAll:function(){}
+                },
+                /**之后的所有兄弟 */
+                nextAll: function (sele) {
+                    return jQuery.dir.call(this, sele, "nextSibling")
+                },
+                /**之前的所有兄弟 */
+                prevAll: function (sele) {
+                    return jQuery.dir.call(this, sele, "previousSibling")
+                }
             })
             jQuery.extend({
                 //*判断什么类型选择器*/
@@ -748,28 +777,43 @@
                     var elem = document.querySelectorAll(selector);
                     arr.push.apply(this, elem)
                     return this;
-                },/**next prev 仿写jQuery */
-                nth:function(typeName,i,selector){
+                },
+                /**https://www.w3school.com.cn/xmldom/prop_node_nextsibling.asp 可以去该网站参考get_nextsibling方法和get_previoussibling方法 学习 API */
+                /**next prev */
+                nth: function (typeName, i, selector) {
                     var $this = this,
                         result = [],
-                        i=i||1,
-                        selector=selector||undefined;
-                        $this.each(function (value, index) {
-                            if (val=value[typeName]) {
-                                if(val.nodeType===i){
-                                    /**selector默认返回值 */
-                                    if (selector===undefined) {
-                                        result.push(val);
-                                    }else if((val.nodeName==selector.toLocaleUpperCase())){
-                                        result.push(val)
-                                    }
+                        i = i || 1,
+                        selector = selector || undefined;
+
+                    $this.each(function (value, index) {
+                        if (val = value[typeName]) {
+                            if (val.nodeType === i) {
+                                /**selector默认返回值 */
+                                if (selector === undefined) {
+                                    result.push(val);
+                                } else if ((val.nodeName == selector.toLocaleUpperCase())) {
+                                    result.push(val)
                                 }
+                                /**方法2 看以参考 
+                                 * dir:function(){}
+                                var num = 0;
+                                for (; value; value = value[typeName]) {
+                                    if (value.nodeType === 1 && ++num === i) {
+                                        break;
+                                    }
+                                }*/
+
                             }
-                        })
+                        }
+                    })
                     return $(result);
-                },/**before after */
-                abter:function(typeName,selector){
-                    var $target = $(selector),$this = this,result = [];
+                },
+                /**before after */
+                abter: function (typeName, selector) {
+                    var $target = $(selector),
+                        $this = this,
+                        result = [];
                     $.each($target, function (value, index) {
                         $this.each(function (val, index) {
                             if (index === 0) {
@@ -783,13 +827,42 @@
                         })
                     })
                     return result;
+                },
+                dir: function (selector, typeName, until) {
+                    var result = [],
+                        $this = this;
+                    $this.each(function (val, index) {
+                        val = val[typeName];
+                        while (val && val.nodeType !== 9 && (until === undefined || val.nodeType !== 1)) {
+                            /**用于兼容result.every(value => value !== val) */
+                            isVal = true;
+                            for (var i = 0; i < result.length; i++) {
+                                isVal = isVal && result[i] !== val;
+                            }
+                            if (val && val.nodeType === 1 && isVal) {
+                                if (!selector) {
+                                    result.push(val);
+                                } else {
+                                    $(selector).each(function (value) {
+                                        if (val === (value)) {
+                                            result.push(value)
+                                        }
+                                    });
+                                }
+                            }
+                            val = val[typeName];
+                        }
+                    });
+                    return $(result);
                 }
             });
             jQuery.fn.extend({
                 attr: function (attr, value) {
-                    /**1.判断是否是字符串 */
+                    return jQuery.access.call(this,"attr",attr,value,arguments.length>1)
+                    /** 
+                    **1.判断是否是字符串 *
                     if (jQuery.isString(attr)) {
-                        //*判断是一个字符串还是两个字符串*/
+                        *判断是一个字符串还是两个字符串*
                         if (arguments.length === 1) {
                             return this[0].getAttribute(attr);
                         } else {
@@ -798,16 +871,96 @@
                             })
                         }
                     }
-                    /**2.判断是否是对象 */
+                    **2.判断是否是对象 *
                     else if (jQuery.isObject(attr)) {
                         var $this = this;
-                        /*便利取出所有属性节点的名称和对应的值*/
+                        *便利取出所有属性节点的名称和对应的值*
                         $.each(attr, function (valKey, name) {
-                            /*遍历取出所有的元素*/
+                            *遍历取出所有的元素*
                             $this.each(function (value, index) {
                                 value.setAttribute(name, valKey)
                             })
                         })
+                    }
+                    return this;
+                    */
+                },
+                /**prop 内置属性 */
+                prop: function (attr, value) {
+                    return jQuery.access.call(this,"prop",attr,value,arguments.length>1)
+                    /*
+                    *1.判断是否是字符串 *
+                    if (jQuery.isString(attr)) {
+                        *判断是一个字符串还是两个字符串*
+                        if (arguments.length === 1) {
+                            return this[0][attr];
+                        } else {
+                            this.each(function (val, key) {
+                                val[attr] = value;
+                            })
+                        }
+                    }
+                    *2.判断是否是对象 *
+                    else if (jQuery.isObject(attr)) {
+                        var $this = this;
+                        *便利取出所有属性节点的名称和对应的值*
+                        $.each(attr, function (valKey, name) {
+                            *遍历取出所有的元素*
+                            $this.each(function (value, index) {
+                                value[name] = valKey;
+                            })
+                        })
+                    }
+                    return this;
+                    */
+                },/** */
+                css:function(){}
+            });
+            /**DOM */
+            jQuery.extend({
+                /**attr prop */
+                access: function (type,attr,value,isArgumentsLength) {
+                    /**1.判断是否是字符串 */
+                    if (jQuery.isString(attr)) {
+                        //*判断是一个字符串还是两个字符串*/
+                        if(type=="attr"){/**attr */
+                            if (!isArgumentsLength) {
+                                return this[0].getAttribute(attr);
+                            } else {
+                                this.each(function (val, key) {
+                                    val.setAttribute(attr, value);
+                                })
+                            }
+                        }else{/**prop */
+                            if (!isArgumentsLength) {
+                                return this[0][attr];
+                            } else {
+                                this.each(function (val, key) {
+                                    val[attr] = value;
+                                })
+                            } }
+                    }
+                    /**2.判断是否是对象 */
+                    else if (jQuery.isObject(attr)) {
+                        var $this = this;
+                        if(type=="attr"){/**attr */
+                            $.each(attr, function (valKey, name) {
+                                /*遍历取出所有的元素*/
+                                $this.each(function (value) {
+                                    value.setAttribute(name, valKey)
+                                })
+                            })
+                        
+                    }else{/**prop */
+                        /*便利取出所有属性节点的名称和对应的值*/
+                        $.each(attr, function (valKey, name) {
+                            console.log(valKey,"value",name)
+                        /*遍历取出所有的元素*/
+                        $this.each(function (value) {
+                            value[name] = valKey;
+                        })
+                        })
+                    }
                     }
                     return this;
                 }

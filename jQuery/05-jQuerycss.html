@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div{
+            background: #00f;
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div width="100">
+        <ul>
+            <li>
+                <div>
+22222222
+                </div>
+                <div>
+                    11111
+                </div>
+            </li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div>
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="div5">
+11111111111111111111
+    </div>
+    <div class="div5">
+11111111111111111111
+    </div>
+    <div></div>
+    <p></p>
+    <h2></h2>
+    <div>2445425</div>
+    <div>24524</div>
+    <script src="./02jQuery.js"></script>
+    <script>
+    //   console.log($('div').prop();
+    //   console.log($('div').prop({display:'none',class2:"none"}));
+    //   console.log($('.div5').prop('class2'))
+
+    //通过 window.getComputedString()//不设置css会自动计算 方法获取样式 不支持IE9以下浏览器
+    var div=document.getElementsByTagName('div')[0]
+    // console.log(window.getComputedStyle(div)['height']);
+    //IE9以下使用 元素.currentStyle['属性'] 来获取
+    console.log(div.currentStyle['width']);
+    </script>
+</body>
+</html>

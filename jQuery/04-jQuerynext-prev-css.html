@@ -31,6 +31,10 @@
     <div class="div5">
 11111111111111111111
     </div>
+    <div class="div5">
+11111111111111111111
+    </div>
+    <div></div>
     <p></p>
     <h2></h2>
     <div>2445425</div>
@@ -48,15 +52,53 @@
         // console.log($('div').next('p'))
         // console.timeEnd('$')
         // console.log($("div"));
-
+        // console.log($(function(){}),'fn')
+            function _$s(elem){
+                return document.querySelectorAll(elem);
+            }
         //之后的所有兄弟
-        function nextAll(source,target){
-            source=document.querySelectorAll(source)[0];
-            var parent=source.parentNode;
-            console.log(source,parent.querySelector('.div5').nextElementSibling);
+        function nextAll(source,target,until){
+            // source=document.querySelectorAll(source);
+            var result=[];
+            // var cur=source['nextSibling'];
+            source.forEach((val,index)=>{
+                val=val['nextSibling'];
+                // console.log(val,val.nodeType,result.indexOf(val))
+               while(val && val.nodeType !== 9 &&(until === undefined || val.nodeType !== 1) ){
+                       if(val&&val.nodeType===1&&result.every(value=>value!==val)){
+                           result.push(val);
+                        }
+                val=val['nextSibling'];
+            }
+            })
+           
+            // console.log(result);
+            return result;
+            // console.log(source,parent.querySelector('.div5').nextElementSibling);
         }
-        nextAll('.div5');
-        $(".div5").insertAfter('li')
+        function next(cur, result, dir, elem ){
+                // return jQuery.nth( elem, 2, "nextSibling" );
+             result = 2 || 1;//2
+		    // console.log(result)
+		            var num = 0;//0
+            //dir for(;cur是否满足条件;cur=cur[nextSibling])
+                for ( ; cur; cur = cur["nextSibling"] ) {
+                    // console.log(cur,cur.nodeType)
+                    console.log(cur,'cur',result)
+                    if ( cur.nodeType === 1 && ++num === result ) {
+                        break;
+                    }
+                }
+                return cur
+            }
+            // console.log(div)
+            // console.log(nextAll(div));
+            var div5=_$s('div');
+            // console.log(div5[0])
+            console.log(next(div5[0]))
+        // nextAll('.div5');
+        // $(".div5").insertAfter('li')
+        // console.log($('.div5').nextAll('script'));
         // console.log($(".div5").before('li'))
         /*jQuery中
         dir: function( elem, dir, until ) {
@@ -72,6 +114,7 @@
 		return matched;
 	},
         */
+       console.log($(".div5").nextAll(),'$(".div5").nextAll()');
     })
             // var arr=[1,2,3,4,5];
             // console.log()

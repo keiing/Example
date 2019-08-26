@@ -106,6 +106,7 @@ jQuery.fn = jQuery.prototype = {
 
 		// Handle $(DOMElement)
 		if ( selector.nodeType ) {
+			console.log(selector)
 			this.context = this[0] = selector;
 			this.length = 1;
 			return this;
@@ -197,7 +198,7 @@ jQuery.fn = jQuery.prototype = {
 		} else if ( jQuery.isFunction( selector ) ) {
 			return rootjQuery.ready( selector );
 		}
-
+		
 		if ( selector.selector !== undefined ) {
 			this.selector = selector.selector;
 			this.context = selector.context;
@@ -5641,6 +5642,7 @@ jQuery.extend({
 	},
 
 	dir: function( elem, dir, until ) {
+		// console.log(elem[dir],dir,until)
 		var matched = [],
 			cur = elem[ dir ];
 
@@ -5650,6 +5652,7 @@ jQuery.extend({
 			}
 			cur = cur[dir];
 		}
+		// console.log(matched,2)
 		return matched;
 	},
 	// nth
