@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" value="input1"><input type="text" value="input2">
+
+    <!-- --------------- -->
+    <div class="a1 a2 a3">a1</div>
+  
+    <div class="">b2</div>
+    <div>c3</div>
+    <script src="./02jQuery.js"></script>
+    <!-- <script src="./jquery.js"></script> -->
+    <script>
+    // console.log($('input').val('22'));
+    // console.log($('div').hasClass());
+    // var div=document.querySelectorAll('div');
+    // console.log(div[0].getAttribute('class'));
+    // console.log(src=" "+div[0].className+" ");
+    // console.log(src.indexOf(" "+'a3'+" "))
+    console.time('$')
+    //添加class
+    // console.log($('div').addClass('a3 a4 a5'));
+    console.timeEnd('$')
+    //删除class
+    console.time('$')
+    // for(var i=0;i<100000;i++){
+       console.log($('div').removeClass('a1'));
+    // }
+    console.timeEnd('$')
+    
+    </script>
+</body>
+</html>

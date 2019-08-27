@@ -383,10 +383,10 @@
                     }
                     return arr;
                 },
-                getStyle:function(dom,styleName){
-                    if(window.getComputedStyle){
+                getStyle: function (dom, styleName) {
+                    if (window.getComputedStyle) {
                         return window.getComputedStyle(dom)[styleName];
-                    }else{
+                    } else {
                         return window.currentStyle(dom)[styleName];
                     }
                 }
@@ -858,7 +858,7 @@
             });
             jQuery.fn.extend({
                 attr: function (attr, value) {
-                    return jQuery.access.call(this,"attr",attr,value,arguments.length>1)
+                    return jQuery.access.call(this, "attr", attr, value, arguments.length > 1)
                     /** 
                     **1.判断是否是字符串 *
                     if (jQuery.isString(attr)) {
@@ -887,7 +887,7 @@
                 },
                 /**prop 内置属性 */
                 prop: function (attr, value) {
-                    return jQuery.access.call(this,"prop",attr,value,arguments.length>1)
+                    return jQuery.access.call(this, "prop", attr, value, arguments.length > 1)
                     /*
                     *1.判断是否是字符串 *
                     if (jQuery.isString(attr)) {
@@ -913,16 +913,17 @@
                     }
                     return this;
                     */
-                },/** */
-                css:function(attr,value){
-                     /**1.判断是否是字符串 */
+                },
+                /**css */
+                css: function (attr, value) {
+                    /**1.判断是否是字符串 */
                     if (jQuery.isString(attr)) {
                         /*判断是一个字符串还是两个字符串*/
                         if (arguments.length === 1) {
-                            return jQuery.getStyle(this[0],attr)
+                            return jQuery.getStyle(this[0], attr)
                         } else {
                             this.each(function (val, key) {
-                                val.style[attr]=value;
+                                val.style[attr] = value;
                             })
                         }
                     }
@@ -931,23 +932,92 @@
                         var $this = this;
                         /*便利取出所有属性节点的名称和对应的值*/
                         $.each(attr, function (valKey, name) {
-                           /*遍历取出所有的元素*/
+                            /*遍历取出所有的元素*/
                             $this.each(function (value, index) {
                                 value.style[name] = valKey;
                             })
+                            return this;
+                        })
+                    }
+                },
+                val: function (content) {
+                    if (arguments && arguments.length === 0) {
+                        return this[0].value;
+                    } else {
+                        this.each(function (value, index) {
+                            value['value'] = content;
                         })
                     }
                     return this;
+                },
+                hasClass: function (name) {
+                    if (arguments.length === 0) {
+                        return false;
+                    } else {
+                        var isflag;
+                        this.each(function (value, index) {
+                            var className = " " + value.className + " "
+                            name = " " + name + " "
+                            if (className.indexOf(name) != -1) {
+                                isflag = true;
+                                return;
+                            }
+                        });
+                        return isflag;
+                    }
+                },
+                /**没有传递参数，返回this */
+                addClass(name) {
+                    if (arguments.length === 0) {
+                        return this
+                    }
+                    /**1.对传入的类名进行切割 */
+                    var names = name.split(" ");
+                    /**2.遍历去除所有的元素 */
+                    this.each(function (value, index) {
+                        /**3.遍历指定元素中是否包含指定的类名 */
+                        $.each(names, function (val, key) {
+                            /**4.判断指定元素中是否包含指定的类名 */
+                            if (!($(value).hasClass(val))) {
+                                if ((val = value.className)) {
+                                    val = val + " " + name;
+                                    value.className = val.replace(/^\s+/, '');
+                                } else {
+                                    value.className = value.className + "" + name;
+                                }
+                            }
+                        })
+                    })
+                    return this;
+                },
+                removeClass(name) {
+                    if (arguments.length === 0) {
+                        this.each(function (value) {
+                            value.removeAttribute('class', "")
+                        })
+                    } else {
+                        var names = name.split(" ");
+                        this.each(function (value, index) {
+                            $.each(names, function (val, key) {
+                                // console.log(value,val,names)
+                                if (!($(value).hasClass(val))) {
+                                    value.className =" "+value.className.replace(val, "").replace(/^\s+|s+$/g, "");
+                                }
+                            })
+                        })
+                        return this;
+                    }
                 }
             });
             /**DOM*/
             jQuery.extend({
                 /**attr prop */
-                access: function (type,attr,value,isArgumentsLength) {
+                access: function (type, attr, value, isArgumentsLength) {
                     /**1.判断是否是字符串 */
                     if (jQuery.isString(attr)) {
                         //*判断是一个字符串还是两个字符串*/
-                        if(type=="attr"){/**attr */
+                        if (type == "attr") {
+                            /**attr */
                             if (!isArgumentsLength) {
                                 return this[0].getAttribute(attr);
                             } else {
@@ -955,36 +1025,40 @@
                                     val.setAttribute(attr, value);
                                 })
                             }
-                        }else{/**prop */
+                        } else {
+                            /**prop */
                             if (!isArgumentsLength) {
                                 return this[0][attr];
                             } else {
                                 this.each(function (val, key) {
                                     val[attr] = value;
                                 })
-                            } }
+                            }
+                        }
                     }
                     /**2.判断是否是对象 */
                     else if (jQuery.isObject(attr)) {
                         var $this = this;
-                        if(type=="attr"){/**attr */
+                        if (type == "attr") {
+                            /**attr */
                             $.each(attr, function (valKey, name) {
                                 /*遍历取出所有的元素*/
                                 $this.each(function (value) {
                                     value.setAttribute(name, valKey)
                                 })
                             })
-                        
-                    }else{/**prop */
-                        /*便利取出所有属性节点的名称和对应的值*/
-                        $.each(attr, function (valKey, name) {
-                            console.log(valKey,"value",name)
-                        /*遍历取出所有的元素*/
-                        $this.each(function (value) {
-                            value[name] = valKey;
-                        })
-                        })
-                    }
+
+                        } else {
+                            /**prop */
+                            /*便利取出所有属性节点的名称和对应的值*/
+                            $.each(attr, function (valKey, name) {
+                                console.log(valKey, "value", name)
+                                /*遍历取出所有的元素*/
+                                $this.each(function (value) {
+                                    value[name] = valKey;
+                                })
+                            })
+                        }
                     }
                     return this;
                 }

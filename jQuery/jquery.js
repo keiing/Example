@@ -6683,24 +6683,28 @@ jQuery.extend({
 	},
 
 	css: function( elem, name, extra ) {
+		// console.log(elem,name,extra)//一样
 		var ret, hooks;
 
 		// Make sure that we're working with the right name
 		name = jQuery.camelCase( name );
 		hooks = jQuery.cssHooks[ name ];
 		name = jQuery.cssProps[ name ] || name;
-
+		console.log(name,hooks,name,'Jquery')
 		// cssFloat needs a special treatment
 		if ( name === "cssFloat" ) {
 			name = "float";
 		}
-
+		
 		// If a hook was provided get the computed value from there
 		if ( hooks && "get" in hooks && (ret = hooks.get( elem, true, extra )) !== undefined ) {
+			console.log(ret,'ret')
 			return ret;
-
+			
 		// Otherwise, if a way to get the computed value exists, use that
 		} else if ( curCSS ) {
+			// cursss执行
+			console.log("cursss执行",elem,name)
 			return curCSS( elem, name );
 		}
 	},
