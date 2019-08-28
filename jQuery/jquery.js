@@ -98,7 +98,6 @@ jQuery.fn = jQuery.prototype = {
 	constructor: jQuery,
 	init: function( selector, context, rootjQuery ) {
 		var match, elem, ret, doc;
-
 		// Handle $(""), $(null), or $(undefined)
 		if ( !selector ) {
 			return this;
@@ -106,7 +105,6 @@ jQuery.fn = jQuery.prototype = {
 
 		// Handle $(DOMElement)
 		if ( selector.nodeType ) {
-			console.log(selector)
 			this.context = this[0] = selector;
 			this.length = 1;
 			return this;

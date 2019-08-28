@@ -12,7 +12,7 @@
     <!-- --------------- -->
     <div class="a1 a2 a3">a1</div>
   
-    <div class="">b2</div>
+    <div class=" ">b2</div>
     <div>c3</div>
     <script src="./02jQuery.js"></script>
     <!-- <script src="./jquery.js"></script> -->
@@ -30,7 +30,7 @@
     //删除class
     console.time('$')
     // for(var i=0;i<100000;i++){
-       console.log($('div').removeClass('a1'));
+       console.log($('div').toggleClass('a2 a3'));
     // }
     console.timeEnd('$')
     

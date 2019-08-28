@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button id='btn1'>btn1</button>
+    <button>btn2</button>
+    <script src="./02jQuery.js"></script>
+    <!-- <script src="./jquery.js"></script> -->
+    <script>
+        /*   */
+    var btn=document.getElementsByTagName('button')
+    // btn.addEventListener('click',function(event){
+    //     alert('btn1')
+    // })
+    function addEvent(name,dom,callback,isflase){
+        if(!name.eventsCache){
+            name.eventsCache={};
+        }
+        if(!name.eventsCache[dom]){
+            console.log(name.eventsCache[dom])
+            name.eventsCache[dom]=[];
+            name.eventsCache[dom].push(callback);
+            if(name.addEventListener){
+                name.addEventListener(dom,function(){
+                    for(var i=0;i<name.eventsCache[dom].length;i++){
+                        name.eventsCache[dom][i]();
+                    }
+                },isflase||false);
+            }else{
+                name.attachEvent('on'+dom,function(){
+                    for(var i=0;i<name.eventsCache[dom].length;i++){
+                        name.eventsCache[dom][i]();
+                    }
+                });
+            }
+        }else{
+            name.eventsCache[dom].push(callback);
+        }
+        return this;
+    }
+    /*
+    addEvent(btn[0],'click',function(){
+        alert('btn2')
+    })
+    addEvent(btn[0],'click',function(){
+        alert('btn3')
+    })
+    addEvent(btn[0],'mouseenter',function(){
+        alert('mouseenter')
+    })
+    addEvent(btn[0],'mouseleave',function(){
+        alert('mouseleave')
+    })*/
+    var fn1=function(){
+        console.log('1111')
+    }
+    var fn2=function(){
+        console.log('2222')
+    }
+    $('#btn1').on('click',fn1);
+    $('button').on('click',fn2);
+    console.log($('button').off('click',fn1,fn2));
+    // console.log($('#btn1').on('click',function(event){
+    //     alert('btn1')
+    // }))
+    // $('button').on('click',function(event){
+    //     alert('btn2')
+    // })
+    // $('button').on('click',function(event){
+    //     alert('btn3')
+    // })
+    </script>
+</body>
+</html>

@@ -69,19 +69,21 @@
          * 8.toggleClass();有则删除，没有则添加
          */
         (function (global, factory) {
-            if (typeof module === "object" && typeof module.export === "object") {
-                module.export = window.document ?
-                    factory(window, true) :
-                    function (window) {
-                        if (!window.document) {
-                            throw new Error('jQuery requries a window with a document')
-                        }
-                        return factory(window);
-                    }
-            } else {
+            /**在IE低版本浏览器中会报错提示不支持 module.export 
+            // console.log(module,'module')
+            // if (typeof module === "object" && typeof (module.export) === "object") {
+            //     module.export = window.document ?
+            //         factory(window, true):function (window) {
+            //             if (!window.document) {
+            //                 throw new Error('jQuery requries a window with a document')
+            //             }
+            //             return factory(window);
+            //         }
+            // } else {
+            //     factory(window);
+            // }
+            */
                 factory(window);
-            }
-
         }(typeof window !== "undefined" ? window : this, function (window, undefined) {
             var vision = "1.0.2",
                 jQuery = function (selector, context) {
@@ -389,6 +391,13 @@
                     } else {
                         return window.currentStyle(dom)[styleName];
                     }
+                },
+                addEvent: function (dom, name, callback, isflase) {
+                    if (dom.addEventListener) {
+                        dom.addEventListener(name, callback, isflase || false);
+                    } else {
+                        dom.attachEvent('on' + name, callback);
+                    }
                 }
             });
             jQuery.fn.extend({
@@ -673,7 +682,7 @@
                     */
                 },
                 /**repaceAll替换内容.被替换内容*/
-                replaceAll(sele) {
+                replaceAll:function(sele) {
                     var $target = $(sele);
                     var $this = this;
                     var result = [];
@@ -761,7 +770,7 @@
             })
             jQuery.extend({
                 //*判断什么类型选择器*/
-                isSelect(selector) {
+                isSelect:function(selector) {
                     if (selector.charAt(0) === "#") {
                         //* console.log('id选择器')*/
                         return 'ID'
@@ -774,7 +783,24 @@
                 },
                 /** 选择器 */
                 sizzle: function (selector) {
-                    var elem = document.querySelectorAll(selector);
+                    if(document.querySelectorAll){
+                        var elem = document.querySelectorAll(selector);
+                    }else{
+                        var isSelect=jQuery.isSelect(selector)
+                        if(isSelect===selector){
+                            selector=selector.replace('.',"")
+                            var elem=document.getElementsByTagName(selector)
+                        }else if(isSelect==="ID"){
+                            selector=selector.replace('#',"")
+                            var elem=document.getElementById(selector);
+                        }
+                        if(elem.length){
+                            arr.push.apply(this,elem)
+                        }else{
+                            arr.push.call(this,elem)
+                        }
+                        return this;
+                    }
                     arr.push.apply(this, elem)
                     return this;
                 },
@@ -967,7 +993,7 @@
                     }
                 },
                 /**没有传递参数，返回this */
-                addClass(name) {
+                addClass:function(name) {
                     if (arguments.length === 0) {
                         return this
                     }
@@ -990,25 +1016,107 @@
                     })
                     return this;
                 },
-                removeClass(name) {
+                removeClass:function(name) {
                     if (arguments.length === 0) {
                         this.each(function (value) {
-                            value.removeAttribute('class', "")
+                            value.removeAttribute("class", "")
                         })
                     } else {
                         var names = name.split(" ");
                         this.each(function (value, index) {
                             $.each(names, function (val, key) {
-                                // console.log(value,val,names)
-                                if (!($(value).hasClass(val))) {
-                                    value.className =" "+value.className.replace(val, "").replace(/^\s+|s+$/g, "");
+                                if (($(value).hasClass(val))) {
+                                    value.className = (" " + value.className).replace(val, "").replace(/^\s+|s+$/g, "");
                                 }
                             })
                         })
                         return this;
                     }
+                },
+                /**没有则添加，有则删除  不传参删除所有*/
+                toggleClass:function(name) {
+                    if (arguments.length === 0) {
+                        this.removeClass();
+                    } else {
+                        var names = name.split(" ");
+                        this.each(function (value, index) {
+                            $.each(names, function (val, key) {
+                                (($value = $(value)).hasClass(val)) ? ($value.removeClass(val)) : $value.addClass(val);
+                                /** 
+                                if ((($value=$(value)).hasClass(val))) {
+                                   //删除
+                                   $value.removeClass(val)
+                                }else{
+                                    $value.addClass(val)
+                                }*/
+                            })
+                        })
+                    }
+                    return this;
                 }
             });
+            /**属性操作相关操作 */
+            jQuery.fn.extend({
+                on: function (name, callback,isflase) {
+                    /**1.遍历去除所有的元素 */
+                    this.each(function (value, index) {
+                        /**2. 判断当前元素中是否有保存事件的对象*/
+                        if(!value.arrayStorage){value.arrayStorage={}}
+                        if(!value.arrayStorage[name]){
+                            /**3.如果还没该数组则创建数组 */
+                            value.arrayStorage[name]=[];
+                            /**4.将回调函数添加到数组中 */
+                            value.arrayStorage[name].push(callback);
+                            /**5.添加对应类型的事件 */
+                            jQuery.addEvent(value,name,function(){/**每次执行改事件时就会去找到改数组，遍历执行 */
+                                jQuery.each(value.arrayStorage[name],function(method){
+                                    method();
+                                })
+                            },isflase);
+                        }else{/**否则就向数组末尾添加传进来的回调函数 */
+                            value.arrayStorage[name].push(callback);
+                        }
+                    });
+                    return this;
+                },
+                off:function(name,callback){
+                    /**1.判断有没有传入参数 */
+                    if(arguments.length===0){
+                        this.each(function(value,index){
+                            value.arrayStorage={};
+                        });
+                    }
+                      /**2.判断是否之传入一个参数 */
+                    else if(arguments.length===1){
+                        this.each(function(value){
+                            value.arrayStorage[name]=[];
+                        })
+                    }
+                    /**3.判断是否之传入两个参数  else if(arguments.length===2)*/
+                    else if(arguments.length===2){
+                        this.each(function(value){
+                            jQuery.each((val=value.arrayStorage[name]),function(method,index){
+                                if(method===callback){
+                                    val.splice(index,1)
+                                }
+                            })
+                        })
+                    }else{
+                        var $this=this,newArguments=[];
+                        [].push.apply(newArguments,arguments);
+                        jQuery.each(newArguments.slice(1),function(call,index){
+                            $this.each(function(value){
+                                jQuery.each((val=value.arrayStorage[name]),function(method,key){
+                                    if(call===method){
+                                        val.splice(key,1);
+                                    }
+                                })
+                            })
+                        })
+                    };
+                    return this;
+                }
+            })
             /**DOM*/
             jQuery.extend({
                 /**attr prop */
@@ -1052,7 +1160,6 @@
                             /**prop */
                             /*便利取出所有属性节点的名称和对应的值*/
                             $.each(attr, function (valKey, name) {
-                                console.log(valKey, "value", name)
                                 /*遍历取出所有的元素*/
                                 $this.each(function (value) {
                                     value[name] = valKey;
