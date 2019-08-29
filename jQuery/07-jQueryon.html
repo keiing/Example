@@ -7,6 +7,7 @@
     <title>Document</title>
 </head>
 <body>
+    <div></div>
     <button id='btn1'>btn1</button>
     <button>btn2</button>
     <script src="./02jQuery.js"></script>
@@ -64,10 +65,12 @@
     }
     $('#btn1').on('click',fn1);
     $('button').on('click',fn2);
-    console.log($('button').off('click',fn1,fn2));
+    // console.log($('button').off('click',fn1,fn2));
     // console.log($('#btn1').on('click',function(event){
     //     alert('btn1')
     // }))
+    console.log(li=$('button').clone(true));
+    $('div').append(li)
     // $('button').on('click',function(event){
     //     alert('btn2')
     // })

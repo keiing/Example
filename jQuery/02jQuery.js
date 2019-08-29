@@ -68,6 +68,9 @@
          * 7.removeClass();清空所有元素指定类或者所有类
          * 8.toggleClass();有则删除，没有则添加
          */
+        /**
+         * clone 克隆 浅克隆只复制元素并不复制事件
+         */
         (function (global, factory) {
             /**在IE低版本浏览器中会报错提示不支持 module.export 
             // console.log(module,'module')
@@ -612,28 +615,6 @@
                     })
                     return result;
                 },
-                /**指定元素.after(元素) 将元素添加到指定元素的后面 */
-                after: function (sele) {
-                    return jQuery.abter.call(this, 'after', sele)
-                    /**
-                    var $target = $(sele);
-                    var $this = this;
-                    var result = [];
-                    $.each($target, function (value, index) {
-                        $this.each(function (val, index) {
-                            if (index === 0) {
-                                val.after(value)
-                                result.push(value);
-                            } else {
-                                var elem = value.cloneNode(true);
-                                val.after(elem);
-                                result.push(elem);
-                            }
-                        })
-                    })
-                    return result;
-                     */
-                },
                 /**元素.insertBefore(指定元素)调用者是谁，就会把元素插入到调用者的前面 将指定元素添加到元素的前面 */
                 insertBefore: function (sele) {
                     var $target = $(sele),
@@ -658,6 +639,28 @@
                         })
                     });
                     return $(result)
+                },
+                /**指定元素.after(元素) 将元素添加到指定元素的后面 */
+                after: function (sele) {
+                    return jQuery.abter.call(this, 'after', sele)
+                    /**
+                    var $target = $(sele);
+                    var $this = this;
+                    var result = [];
+                    $.each($target, function (value, index) {
+                        $this.each(function (val, index) {
+                            if (index === 0) {
+                                val.after(value)
+                                result.push(value);
+                            } else {
+                                var elem = value.cloneNode(true);
+                                val.after(elem);
+                                result.push(elem);
+                            }
+                        })
+                    })
+                    return result;
+                     */
                 },
                 /**指定元素.before(元素) 将元素添加到指定元素的前面 */
                 before: function (sele) {
@@ -711,6 +714,31 @@
                             }
                         })
                     });
+                    return $(result);
+                },
+                clone:function(deep){
+                    var result=[];
+                    /**1.判断是否是深复制 */
+                    if(deep){
+                        /**深复制 */
+                        this.each(function(value,index){
+                            var temp=value.cloneNode(true);
+                            /**便利元素中的arrayStorage对象 */
+                            jQuery.each(value.arrayStorage,function(array,name){
+                                /**遍历事件对应的数组 */
+                                jQuery.each(array,function(method){
+                                    $(temp).on(name,method);
+                                });
+                            });
+                            result.push(temp);
+                        });
+                    }else{
+                        /**浅复制 */
+                        this.each(function(value,index){
+                            var temp=value.cloneNode(true);
+                            result.push(temp);
+                        });
+                    }
                     return $(result);
                 }
             });
@@ -1169,6 +1197,22 @@
                     }
                     return this;
                 }
+                /**
+                 ,
+                clone:function(value){
+                    if(value==null){return value;}
+                    if(value instanceof RegExp){return new RegExp(value)};
+                    if(value instanceof Date){return new Date(value)};
+                    if(typeof value!='object'){return value};
+                    var obj=new value.constructor();//[] {};
+                    for(let key in value){
+                        if(value.hasOwnProperty(key)){
+                            obj[key]=jQuery.clone(value[key])
+                        }
+                    }
+                    return obj;
+                }
+                 */
             })
             if (!noGlobal) {
                 window.jQuery = window.$ = jQuery;
