@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>3D旋转相册</title>
+    <style>
+     *{
+         margin: 0;
+         padding: 0;
+        }
+        body{
+            background: #000;
+        }
+        .wrapper{
+         margin: 150px auto;
+         width: 150px;
+         height: 150px;
+         /*在img的父级设置视觉效果*/
+         perspective: 800px;
+     }
+     .imgBox{
+         position: relative;
+         transform-style: preserve-3d;
+         height: 100%;
+         /*设置舞台*/
+     }
+     .imgBox>img{
+         width: 100%;
+         height: 100%;
+         position: absolute;
+         top:0;
+         left:0;
+         box-shadow: 0 0 8px 0 #eeeeee;
+     }
+    </style>
+</head>
+<body>
+    <!--div.wrapper>div.imgBox>img[src='images/$.jpg']*8 -->
+    <div class="wrapper">
+        <div class="imgBox">
+            <img src="images/1.jpg" alt="">
+            <img src="images/2.jpg" alt="">
+            <img src="images/3.jpg" alt="">
+            <img src="images/4.jpg" alt="">
+            <img src="images/5.jpg" alt="">
+            <img src="images/6.jpg" alt="">
+            <img src="images/7.jpg" alt="">
+            <img src="images/8.jpg" alt="">
+        </div>
+        <div class="bottom"></div>
+    </div>
+<script src="./Album.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded',function(){
+        var imgBox=document.querySelector('.imgBox');
+        var imgs=imgBox.children;
+        var len=imgs.length;
+        var temp=360/len;
+        for(var i=0;i<len;i++){
+            imgs[i].style.transform="rotateY("+temp*i+"deg) translateZ(300px)";
+            imgs[i].style.transition="1.5s "+(len-1-i)*0.2+"s"
+        }
+        var nub=0;
+        setInterval(function(){
+            nub++;
+            var val=nub*0.2;
+            imgBox.style.transform="rotateX(-10deg) rotateY("+val+"deg)"
+        },30)
+        var imgUrls=[];
+        for(let i=1;i<'./images'.length+1;i++){
+            let obj=Object.create(null);
+            obj['src']='images/'+i+'.jpg'
+            obj['link']='http://www.biadu.com'
+            imgUrls.push(obj);
+        }
+        Album(imgBox,imgUrls)
+    })
+</script>
+</body>
+</html>
