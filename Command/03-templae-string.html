@@ -1,0 +1,34 @@
+<script>
+/*
+let breakfast={
+    getDrink(){
+        return 'desert'
+    }
+}
+let dinner={
+    getDrink(){
+        return 'slide'
+    }
+}
+let sunday=Object.create(breakfast);
+console.log(sunday.getDrink());
+console.log(Object.getPrototypeOf(sunday))
+console.log(sunday)
+*/
+class Chef{
+    constructor(food){
+    this.food=food;
+     this._dish=[];
+    }
+    get dish(){
+     return this._dish;
+    }
+    set dish(dish){
+     return this._dish.push(dish);
+    }
+   }
+let caocao=new Chef('caocao');
+   console.log(caocao.dish='333')
+   console.log(caocao.dish='555')
+   console.log(caocao.dish)
+</script>

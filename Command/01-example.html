@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button id="toleft">左移动</button>
+   <input type="text" id="num">
+    <button>右移动</button>
+
+    <div class="wraper">
+        <div id="mydiv">thisisdiv</div>
+    </div>
+
+    <button>前进</button>
+    <button>后退</button>
+    <script>
+    var input=document.getElementById('num');
+        var dom=document.getElementById('mydiv')
+    
+    function changeDiv(dataob){
+        var _data=dataob.getDate();
+        dom.style[_data.property]=_data.num;
+    }
+    function DateManger(){
+        this.nowstate=0;
+        this.stateArr=[{property:'left',num:0}]
+    }
+    DateManger.prototype.getDate=function(){
+        return this.stateArr[this.nowstate];
+    }
+    DateManger.prototype.pushState=function(state){
+        this.stateArr.push(state);
+    }
+    var dataob=new DateManger();
+
+    document.getElementById('toleft').onclick=function(){
+        dataob.pushState({property:'left',num:input.value});
+        changeDiv(dataob);
+    }
+    </script>
+</body>
+</html>
