@@ -1,0 +1,1 @@
+module.exports=require('./lib/express.js');//一般作为启动文件，引用核心模块/文件
