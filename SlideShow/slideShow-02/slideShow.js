@@ -19,14 +19,14 @@ window.slideShow = (function (window, undefined) {
         Array.prototype.forEach.call(ulLiArr, (function (val) {
             return config[val] = config[val] || (config[val] = {});
         }));
-
+  
         isSelect = isSelect || {};
         var typeofIselect;
         (typeofIselect = typeof isSelect) !== "boolean" ?
             isSelect = {
                 leftUrl: isSelect["leftUrl"] || "https://i.52112.com/icon/jpg/256/NoPack/325.jpg",
                 rightUrl: isSelect["rightUrl"] || "https://i.52112.com/icon/jpg/256/NoPack/280.jpg",
-                backgroundColor: isSelect["backgroundColor"] ||"#fff"||"transparent",
+                backgroundColor: isSelect["backgroundColor"] || "#fff" || "transparent",
                 /**默认div背景颜色透明*/
                 opacity: isSelect["opacity"] || 0.6,
                 /**透明度默认0.6 */
@@ -61,7 +61,7 @@ window.slideShow = (function (window, undefined) {
                 /** 默认悬浮宽度*/
                 heighted: isSelect["heighted"] || "100px",
                 /** 默认悬浮高度*/
-
+  
             } : isSelect;
         config["ul"] = {
             width: config["ul"]["width"] || 1000,
@@ -89,17 +89,19 @@ window.slideShow = (function (window, undefined) {
             height: config["li"]["height"] || "10px",
             /**li高度默认10px */
             backgroundColor: config["li"]["background"] || "#fff",
-            /**li北京背景默认白色*/
+            /**li背景默认白色*/
             backgroundColored: config["li"]["backgrounded"] || "#000",
             /**li背景选中颜色默认白色*/
             cursor: config["li"]["cursor"] || "pointer",
             /**li选中默认小手*/
-            borderRadius: config["li"]["borderRadius"] || "5px",
+            borderRadius: config["li"]["borderRadius"] || "30px",
             /**圆角度数默认5px */
+            border: config["li"]["bordered"] || '2px solid #fff',
+            /**li选中默认边框 */
         }
-
+  
         var Fragment, div, ul, lis, len, btnRight, btnLeft, i = 0,
-            lisChildren, timer, canClick = true,timerMouseover, mouse = !0;/** canClick设置开关 让用户疯狂点击向左或者向右无效 为了放弃用户看出动画是欺骗视觉效果;*/
+            lisChildren, timer, canClick = true, timerMouseover, mouse = !0;/** canClick设置开关 让用户疯狂点击向左或者向右无效 为了放弃用户看出动画是欺骗视觉效果;*/
         /**init初始化 */
         (function () {
             len = obj.length || Object.keys(obj).length;
@@ -119,7 +121,7 @@ window.slideShow = (function (window, undefined) {
                 },
                 ulImgsLi: {
                     width: config["ul"]["width"] + "px",
-                    float: "left"
+                    float: "left",
                 },
                 ulImgsImg: {
                     width: config["ul"]["width"] + "px",
@@ -134,7 +136,7 @@ window.slideShow = (function (window, undefined) {
                     position: "absolute",
                     bottom: config["li"]["ulBottom"],
                     left: config["li"]["ulLeft"],
-                    marginLeft: "-50px"
+                    transform: "translatex(-50%)"
                 },
                 lisLi: {
                     /**li大小样式 */
@@ -144,7 +146,8 @@ window.slideShow = (function (window, undefined) {
                     backgroundColor: config["li"]["backgroundColor"],
                     borderRadius: config["li"]["borderRadius"],
                     margin: config["li"]["margin"],
-                    cursor: config["li"]["cursor"]
+                    cursor: config["li"]["cursor"],
+                    border: config["li"]["border"]
                 }
             }
             if (typeofIselect !== "boolean") {
@@ -163,7 +166,7 @@ window.slideShow = (function (window, undefined) {
                 }
                 EventStyle["btnLeft"] = {
                     left: "20px",
-
+  
                     backgroundSize: isSelect["backgroundSize"]
                 }
                 EventStyle["btnRight"] = {
@@ -183,23 +186,23 @@ window.slideShow = (function (window, undefined) {
                 config["ul"]["interval"] <= ((config["ul"]["delayTime"] + config["ul"]["liTiem"]) * 3) ?
                     ((config["ul"]["delayTime"] + config["ul"]["liTiem"]) * 4) :
                     config["ul"]["interval"]
-
+  
             Fragment = document.createDocumentFragment();
             div = document.createElement("div");
-
+  
             if (typeofIselect !== "boolean") {
                 btnLeft = document.createElement("div");
                 btnRight = document.createElement("div");
-
+  
                 btnLeft.setAttribute("style", EventStyle["btn"] + EventStyle["btnLeft"])
                 btnRight.setAttribute("style", EventStyle["btn"] + EventStyle["btnRight"])
-
+  
                 btnLeft.style.setProperty('background-image', "url(" + isSelect["leftUrl"] + ")")
                 btnRight.style.setProperty('background-image', "url(" + isSelect["rightUrl"] + ")")
                 div.appendChild(btnLeft);
                 div.appendChild(btnRight);
             }
-
+  
             ul = document.createElement("ul");
             lis = document.createElement("ul");
             div.setAttribute("style", EventStyle["divInit"])
@@ -209,12 +212,12 @@ window.slideShow = (function (window, undefined) {
                 li = document.createElement("li");
                 li.setAttribute("style", EventStyle["ulImgsLi"])
                 img = document.createElement("img")
-
+  
                 isObject == "[object Object]" ? i < len ? ((img.src = obj[i].src)
                     && (img.setAttribute("data-href", obj[i]["link"]))) :
                     ((img.src = obj[0].src) && (img.setAttribute("data-href", obj[0]["link"]))) :
                     i < len ? img.src = obj[i] : img.src = obj[0];
-
+  
                 img.setAttribute("style", EventStyle["ulImgsImg"])
                 ul.appendChild(li).appendChild(img)
                 if (i < len) {
@@ -229,7 +232,10 @@ window.slideShow = (function (window, undefined) {
             Fragment.appendChild(div).appendChild(ul);
             return;
         }());
-        ul.addEventListener("click", event => location.href = (event.target["dataset"]["href"]), true)
+        // 
+        if (obj[i]["link"]) {
+            ul.addEventListener("click", event => location.href = (event.target["dataset"]["href"]), true)
+        }
         function slide(to) {
             if (to == undefined) {
                 to = i + 1;
@@ -259,8 +265,9 @@ window.slideShow = (function (window, undefined) {
                 }, config["ul"]["liTiem"])
             }
             lisChildren[i]["style"]["setProperty"]("background", config["li"]["backgroundColored"])
+            lisChildren[i]["style"]["setProperty"]("border", config["li"]["bordered"])
         }
-
+  
         if (typeofIselect !== "boolean") {
             btnRight.onclick = function () {
                 slidelay(1)
@@ -269,7 +276,7 @@ window.slideShow = (function (window, undefined) {
                 slidelay(-1);
             }
         }
-
+  
         function slidelay(n) {
             if (timer) {
                 clearInterval(timer);
@@ -289,7 +296,7 @@ window.slideShow = (function (window, undefined) {
                 }, config["ul"]["liTiem"] + 30);/**开启开关事件需要和动画持续时间同步 */
             }
         }
-
+  
         lis.onclick = function (e) {
             if (canClick) {
                 var li = e.target;
@@ -317,7 +324,7 @@ window.slideShow = (function (window, undefined) {
                 }
             }
         }
-
+  
         /**定时器 */
         timer = setInterval(function () {
             slide()
@@ -341,9 +348,9 @@ window.slideShow = (function (window, undefined) {
                 this.style.setProperty("width", isSelect["widthed"])
                 this.style.setProperty("height", isSelect["heighted"])
                 this.style.setProperty("background-repeat", isSelect["backgroundRepeated"])
-                setTimeout(function(){
+                setTimeout(function () {
                     mouse = !1;
-                },150)
+                }, 150)
                 if (timerMouseover) {
                     clearInterval(timerMouseover);
                     timerMouseover = null;
@@ -358,18 +365,21 @@ window.slideShow = (function (window, undefined) {
             this.style.setProperty("height", isSelect["height"])
             this.style.setProperty("background-repeat", isSelect["backgroundRepeat"])
             timerMouseover = setTimeout(function () {
-                mouse = true
+                mouse = !0
             }, 300)
         }
-
-        btnRight.addEventListener("mouseover", mouseover)
-        btnLeft.addEventListener("mouseover", mouseover)
-
-        btnRight.addEventListener("mouseout", mouseout)
-        btnLeft.addEventListener("mouseout", mouseout)
-
+  
+        if (typeof isSelect !== 'boolean') {
+  
+            btnRight.addEventListener("mouseover", mouseover)
+            btnLeft.addEventListener("mouseover", mouseover)
+  
+            btnRight.addEventListener("mouseout", mouseout)
+            btnLeft.addEventListener("mouseout", mouseout)
+  
+        }
         el.appendChild(Fragment);
         return slidelay;
     }
     return slideShow;
-})(window)
+  })(window)
