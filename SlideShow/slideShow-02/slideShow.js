@@ -105,7 +105,7 @@ window.slideShow = (function (window, undefined) {
         /**init初始化 */
         (function () {
             len = obj.length || Object.keys(obj).length;
-            var EventStyle = {
+            let EventStyle = {
                 divInit: {
                     width: config["ul"]["width"] + "px",
                     height: config["ul"]["height"] + "px",
@@ -230,6 +230,7 @@ window.slideShow = (function (window, undefined) {
             lisChildren[0]["style"]["setProperty"]("background", config["li"]["backgroundColored"])
             div.appendChild(lis)
             Fragment.appendChild(div).appendChild(ul);
+            EventStyle=null;
             return;
         }());
         // 
@@ -352,7 +353,7 @@ window.slideShow = (function (window, undefined) {
                     mouse = !1;
                 }, 150)
                 if (timerMouseover) {
-                    clearInterval(timerMouseover);
+                    clearTimeout(timerMouseover);
                     timerMouseover = null;
                 }
             }
@@ -371,14 +372,15 @@ window.slideShow = (function (window, undefined) {
   
         if (typeof isSelect !== 'boolean') {
   
-            btnRight.addEventListener("mouseover", mouseover)
-            btnLeft.addEventListener("mouseover", mouseover)
-  
-            btnRight.addEventListener("mouseout", mouseout)
-            btnLeft.addEventListener("mouseout", mouseout)
+            btnRight.addEventListener("mouseover", mouseover),
+            btnLeft.addEventListener("mouseover", mouseover),
+            btnRight.addEventListener("mouseout", mouseout),
+            btnLeft.addEventListener("mouseout", mouseout);
   
         }
-        el.appendChild(Fragment);
+        el.appendChild(Fragment),
+        el=null,
+        obj=null;
         return slidelay;
     }
     return slideShow;

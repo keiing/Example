@@ -13,35 +13,21 @@
     </style>
 </head>
 <body>
-    <img src="../slideShow-01/bgtimg.jpg" alt="">
+    <!-- <img src="../slideShow-01/bgtimg.jpg" alt=""> -->
     <div id="d1"></div>
     <div>22222222222</div>
     <script src="slideShow.js"></script>
     <script>
-        var div=document.getElementById('d1')
-    var div2=div.nextElementSibling,arr=[
-        {src:"../slideShow-01/timg.jpg",link:'http://127.0.0.1:5500/slideShow.html'},
-        {src:"../slideShow-01/timg1.jpg",link:'https://www.cnblogs.com/jianxian/p/11123766.html'},
-        {src:"../slideShow-01/bgtimg.jpg",link:'http://baidu.com'}
-    ]
-    slideShow(div,arr,false,{ul:{interval:1300}});
-    // slideShow(div2,['./indexSlideShow/indexSlideShowImg2.jpg','./indexSlideShow/indexSlideShowImg3.jpg'],{},{ul:{width:"1200",height:1020}});
-    /* 
-       var age=100;
-    function test(){
-      this.age=50;
-      return function(){
-    console.log(this)
-        console.log(this.age);
-      }
-    }
-    var m=new test();
-// console.log(m);/m=function(){console.log(m.age)}
-//     alert(m());//100 
-console.log(m());
-    var n=test();
-//     alert(n());50
-*/
+        window.onload=function(){
+            var div=document.getElementById('d1')
+        var div2=div.nextElementSibling,arr=[
+            {src:"../slideShow-01/timg.jpg",link:'http://127.0.0.1:5500/slideShow.html'},
+            {src:"../slideShow-01/timg1.jpg",link:'https://www.cnblogs.com/jianxian/p/11123766.html'},
+            {src:"../slideShow-01/bgtimg.jpg",link:'http://baidu.com'}
+        ]
+        slideShow(div,arr,false,{ul:{interval:1300}})
+        }
+
     </script>
 </body>
 </html>
