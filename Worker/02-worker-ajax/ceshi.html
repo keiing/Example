@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button >
+        发送请求
+    </button>
+    <script src="./ajaxjs.js"></script>
+    <script>
+     let btn=document.getElementsByTagName("button");
+     btn[0].onclick=function(){
+        ajax({url:"http://127.0.0.1:5050/user",token:true}).then(data=>{
+             console.log(data)
+             console.log(this.setIsLogin)
+         });
+     }
+    </script>
+</body>
+</html>
