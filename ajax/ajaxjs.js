@@ -28,6 +28,7 @@ function ajax({
         let reg=/^\{.*\}$/g;
        if(res.match(reg)){
         res = JSON.parse(res);
+
           if (res.status == 403) {
             localStorage.removeItem("token");
             sessionStorage.removeItem("token");
@@ -41,7 +42,7 @@ function ajax({
           } else if (res.token) {
             this.setIsLogin = res['data'] && res.data.uname;
             this.setUname = true;
-            
+
             if (res.remember === "true") {
               localStorage.setItem("token", res.token);
             } else {
