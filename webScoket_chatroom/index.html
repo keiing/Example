@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 简陋版 -->
+    <div class="classroom">
+        <input type="text">
+        <button class="btn">发送</button>
+        <div></div>
+    </div>
+    <!-- <script src="../jQuery/02jQuery.js"></script> -->
+    <script>
+        (function(window,undefined){
+        function $(elem){
+            return document.querySelector(elem)
+        }
+
+        function websocketStart(url){
+            return new WebSocket(url)
+        }
+        let socket=(function(fn,url){
+            if(!url)return;
+            return fn(url)
+        }(websocketStart,'ws:127.0.0.1:3000'));
+
+        //连接成功
+        function socketOpen(){
+           console.log('连接成功')
+        }
+        //发送消息
+        function socketSend(socket,value){
+           socket.send(value)
+        }
+        function socketMessage(e){
+            handlemessage(e.data)
+        }
+        function socketClose(){
+            console.log('连接关闭')
+        }
+        function socketError(err){
+            console.log(err)
+        }
+        socket.onopen=socketOpen;
+        socket.onmessage=socketMessage;
+        socket.onclose=socketClose;
+        socket.onerror=socketError;
+
+        $('.btn').onclick=function(){
+            socketSend(socket,$('input').value)
+        }
+        //处理返回内容
+        function handlemessage(data){
+            $('div').innerHTML=data.data;
+        }
+    }());
+    </script>
+    </body>
+</html>
